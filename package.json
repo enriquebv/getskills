@@ -1,0 +1,16 @@
+{
+  "name": "getskills",
+  "author": {
+    "name": "enriquebv_dev",
+    "email": "ebvcontacto@gmail.com"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "scripts": {
+    "lerna": "lerna"
+  }
+}
