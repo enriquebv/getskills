@@ -84,11 +84,11 @@ To get a local copy up and running follow these simple steps.
 <!-- ROADMAP -->
 ## Roadmap
 
-[ ] Bids
-[ ] Broadcast tools integrations
-    [ ] Streamlabs OBS
-    [ ] OBS Studio
-[ ] Zapier
+- [ ] Bids
+- [ ] Broadcast tools integrations
+    - [ ] Streamlabs OBS
+    - [ ] OBS Studio
+- [ ] Zapier
 
 [Open an issues](https://github.com/enriquebv/getskills/issues) to propose features (and know issues).
 
