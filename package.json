@@ -11,6 +11,12 @@
     "lerna": "^3.22.1"
   },
   "scripts": {
-    "lerna": "lerna"
+    "lerna": "lerna",
+    "docker:install": "yarn docker:install:redis && yarn docker:install:mongodb",
+    "docker:install:redis": "docker run --name getskills-redis -p 6379:6379 -d redis:6.0.10",
+    "docker:install:mongodb": "docker volume create --name=getskills-mongodata && docker run --name getskills-mongodb -v getskills-mongodata:/data/db -d -p 27017:27017 mongo",
+    "docker:start": "docker start getskills-mongodb && docker start getskills-redis",
+    "docker:stop": "docker stop getskills-mongodb && docker stop getskills-redis",
+    "docker:restart": "docker restart getskills-mongodb && docker restart getskills-redis"
   }
 }
