@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const oauthTwithUrl = [
   `https://id.twitch.tv/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}`,
-  `redirect_uri=http://localhost:8080`,
+  `redirect_uri=http://localhost:8080/callback`,
   `response_type=token`,
   `scope=user:read:email`,
 ].join("&");
