@@ -40,7 +40,7 @@ export default function Test() {
       console.error(error);
       setErrored(true);
 
-      console.info("error handled");
+      console.info("error handled", showTryAgain);
 
       if (!showTryAgain) {
         console.info("run router.push");
