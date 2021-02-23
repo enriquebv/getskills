@@ -40,6 +40,8 @@ export default function Test() {
       console.error(error);
       setErrored(true);
 
+      console.info("error handled");
+
       if (!showTryAgain) {
         console.info("run router.push");
         setTimeout(() => router.push("/"), 3000);
