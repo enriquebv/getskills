@@ -1,7 +1,6 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { TwitchApiRepository } from 'src/shared/twitch-api.repository';
-import { AuthService, UserTokenPair } from './auth.service';
+import { AuthService } from './auth.service';
 import { TokenDto } from './dto/token.dto';
 import { TwitchParamsDto } from './dto/twitch-params.dto';
 
