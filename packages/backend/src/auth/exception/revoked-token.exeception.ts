@@ -1,7 +1,7 @@
-import { NotAcceptableException } from "@nestjs/common";
+import { NotAcceptableException } from '@nestjs/common';
 
-export class ForbiddenException extends NotAcceptableException {
+export class RevokedTokenException extends NotAcceptableException {
   constructor() {
-    super('Refresh token is revoked.')
+    super('Refresh token is revoked.');
   }
 }

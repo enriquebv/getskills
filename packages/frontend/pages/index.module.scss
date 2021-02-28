@@ -2,6 +2,7 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  height: 100%;
 
   h1 {
     font-weight: 900;
@@ -14,6 +15,7 @@
     flex-flow: column;
     align-items: center;
     justify-content: center;
+    height: 100%;
 
     p {
       font-size: 26px;
@@ -34,7 +36,6 @@
       align-items: center;
       font-weight: 800;
       font-size: 36px;
-      margin-top: 20px;
     }
   }
 
@@ -42,6 +43,7 @@
     flex: 1;
     min-height: 430px;
     margin-left: 60px;
+    margin-bottom: -1.5rem;
 
     svg.image {
       max-width: 100%;

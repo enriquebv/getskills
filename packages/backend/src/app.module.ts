@@ -1,10 +1,16 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthMiddleware } from './auth/auth.middleware';
 
-// Imports
-import { UserModule } from './user/user.module';
+// Modules
 import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -12,12 +18,16 @@ import { AuthModule } from './auth/auth.module';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI')
+        uri: configService.get<string>('MONGODB_URI'),
       }),
-      inject: [ConfigService]
+      inject: [ConfigService],
     }),
+    AuthModule,
     UserModule,
-    AuthModule
   ],
 })
-export class AppModule { }
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('*');
+  }
+}

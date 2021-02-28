@@ -6,50 +6,75 @@ import { useRouter } from "next/router";
 import { TwitchParamsDto } from "dto/twitch-params.dto";
 import { authWithTwitch } from "infrastructure/api";
 
+class WithoutHashException {}
+
+class BadTwitchParams {
+  public params: any = {};
+
+  constructor(params: any) {
+    this.params = params;
+  }
+}
+
 export default function Test() {
   const router = useRouter();
   const [errored, setErrored] = useState(false);
   const [showTryAgain, setShowTryAgain] = useState(true);
 
-  function parseHash() {
+  async function parseHash() {
     try {
       if (!window.location.hash) {
-        setShowTryAgain(false);
-        throw new Error("There is no hash.");
+        throw new WithoutHashException();
       }
+
       const params = window.location.hash
         .replace("#", "")
         .split("&")
         .reduce((acc, item) => {
           const [key, value] = item.split("=");
 
-          acc[key] = unescape(value);
+          if (key === "scope") {
+            acc.scopes = unescape(value).split("+");
+          } else {
+            acc[key] = unescape(value);
+          }
 
           return acc;
         }, {} as TwitchParamsDto);
 
-      if (!params.token_type || !params.access_token || !params.scope) {
-        setShowTryAgain(false);
-        throw new Error(
-          `Without required twitch params: ${JSON.stringify(params)}.`
-        );
+      if (!params.token_type || !params.access_token || !params.scopes) {
+        throw new BadTwitchParams(params);
       }
 
-      authWithTwitch(params);
+      await authWithTwitch(params);
     } catch (error) {
-      console.error(error);
       setErrored(true);
 
-      console.info("error handled", showTryAgain);
-
-      if (!showTryAgain) {
-        console.info("run router.push");
-        setTimeout(() => router.push("/"), 3000);
+      if (error instanceof WithoutHashException) {
+        setShowTryAgain(false);
+        return;
       }
+
+      if (error instanceof BadTwitchParams) {
+        console.warn(`Bad Twitch params ${JSON.stringify(error.params)}`);
+        setShowTryAgain(false);
+        return;
+      }
+
+      console.error(error);
     }
   }
 
-  useEffect(parseHash, []);
+  // When pages mount
+  useEffect(() => {
+    parseHash();
+  }, []);
+
+  // useEffect(
+  //   (): any =>
+  //     !showTryAgain && errored && setTimeout(() => router.push("/"), 4000),
+  //   [showTryAgain, errored]
+  // );
 
   return (
     <div className={styles["callback-page"]}>

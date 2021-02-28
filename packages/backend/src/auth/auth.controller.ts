@@ -1,20 +1,38 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { TwitchApiRepository } from 'src/shared/twitch-api.repository';
-import { AuthService } from './auth.service';
+import { Controller, Post, Body, Res, Req } from '@nestjs/common';
+import { Response } from 'express';
+import { AuthService, RequestSession } from './auth.service';
 import { TokenDto } from './dto/token.dto';
 import { TwitchParamsDto } from './dto/twitch-params.dto';
 
 @Controller('/api/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService, private readonly twitchApiRepository: TwitchApiRepository) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('/twitch')
-  async authWithTwitch(@Body() body: TwitchParamsDto) {
-    const twitchUser = await this.twitchApiRepository.getUser({ accessToken: body.access_token })
+  async authWithTwitch(@Body() body: TwitchParamsDto, @Res() res: Response) {
+    const tokens = await this.authService.authWithTwitch({
+      twitchAccessToken: body.access_token,
+      scopes: body.scopes,
+      type: body.token_type,
+    });
 
-    // generar usuario si no existe en back-end
-    // generar par de tokens
-    // devolver tokens
+    if (!body.browser) {
+      return tokens;
+    }
+
+    const { APP_ENV, ALLOWED_COOKIE_DOMAIN } = process.env;
+
+    const cookieOptions = {
+      httpOnly: true,
+      path: '/',
+      domain: ALLOWED_COOKIE_DOMAIN,
+      secure: APP_ENV === 'production',
+    };
+
+    res
+      .cookie('gs.access', tokens.access, cookieOptions)
+      .cookie('gs.refresh', tokens.refresh, cookieOptions)
+      .send(tokens);
   }
 
   @Post('/refresh')

@@ -1,5 +1,6 @@
 export interface TwitchParamsDto {
   access_token: string;
-  scope: string;
+  scopes: string[];
   token_type: string;
+  browser: boolean;
 }
