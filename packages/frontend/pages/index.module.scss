@@ -36,6 +36,12 @@
       align-items: center;
       font-weight: 800;
       font-size: 36px;
+      user-select: none;
+
+      &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
     }
   }
 

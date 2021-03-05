@@ -2,9 +2,9 @@ import styles from "./callback.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { TwitchParamsDto } from "dto/twitch-params.dto";
-import { authWithTwitch } from "infrastructure/api";
+import { authWithTwitch, testFallo } from "infrastructure/api";
+import { useRouter } from "next/dist/client/router";
 
 class WithoutHashException {}
 
@@ -16,37 +16,43 @@ class BadTwitchParams {
   }
 }
 
+function parseTwitchHash(hash: string): TwitchParamsDto {
+  if (!hash) {
+    throw new WithoutHashException();
+  }
+
+  const parsed = hash
+    .replace("#", "")
+    .split("&")
+    .reduce((acc, item) => {
+      const [key, value] = item.split("=");
+
+      if (key === "scope") {
+        acc.scopes = unescape(value).split("+");
+      } else {
+        acc[key] = unescape(value);
+      }
+
+      return acc;
+    }, {} as TwitchParamsDto);
+
+  if (!parsed.token_type || !parsed.access_token || !parsed.scopes) {
+    throw new BadTwitchParams(parsed);
+  }
+
+  return parsed;
+}
+
 export default function Test() {
   const router = useRouter();
   const [errored, setErrored] = useState(false);
   const [showTryAgain, setShowTryAgain] = useState(true);
 
-  async function parseHash() {
+  async function auth() {
     try {
-      if (!window.location.hash) {
-        throw new WithoutHashException();
-      }
-
-      const params = window.location.hash
-        .replace("#", "")
-        .split("&")
-        .reduce((acc, item) => {
-          const [key, value] = item.split("=");
-
-          if (key === "scope") {
-            acc.scopes = unescape(value).split("+");
-          } else {
-            acc[key] = unescape(value);
-          }
-
-          return acc;
-        }, {} as TwitchParamsDto);
-
-      if (!params.token_type || !params.access_token || !params.scopes) {
-        throw new BadTwitchParams(params);
-      }
-
+      const params = parseTwitchHash(window.location.hash);
       await authWithTwitch(params);
+      // router.push("/app");
     } catch (error) {
       setErrored(true);
 
@@ -65,16 +71,17 @@ export default function Test() {
     }
   }
 
-  // When pages mount
+  // When pages mount, try to auth
   useEffect(() => {
-    parseHash();
+    auth();
   }, []);
 
-  // useEffect(
-  //   (): any =>
-  //     !showTryAgain && errored && setTimeout(() => router.push("/"), 4000),
-  //   [showTryAgain, errored]
-  // );
+  // If error needs re-auth, send the user again to index page
+  useEffect(
+    (): any =>
+      !showTryAgain && errored && setTimeout(() => router.push("/"), 4000),
+    [showTryAgain, errored]
+  );
 
   return (
     <div className={styles["callback-page"]}>
@@ -89,7 +96,7 @@ export default function Test() {
             Oops! Sorry, but an <span>error</span> has occurred.
           </h1>
           {showTryAgain ? (
-            <button onClick={parseHash}>Try again</button>
+            <button onClick={auth}>Try again</button>
           ) : (
             <p>Redirecting to main page...</p>
           )}

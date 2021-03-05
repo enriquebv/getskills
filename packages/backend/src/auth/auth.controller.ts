@@ -1,8 +1,17 @@
-import { Controller, Post, Body, Res, Req } from '@nestjs/common';
-import { Response } from 'express';
+import {
+  Controller,
+  Post,
+  Body,
+  Res,
+  Req,
+  Get,
+  UseGuards,
+} from '@nestjs/common';
+import { Response, Request } from 'express';
 import { AuthService, RequestSession } from './auth.service';
 import { TokenDto } from './dto/token.dto';
 import { TwitchParamsDto } from './dto/twitch-params.dto';
+import { OnlyAuthorizedGuard } from './only-authorized.guard';
 
 @Controller('/api/auth')
 export class AuthController {
@@ -16,9 +25,35 @@ export class AuthController {
       type: body.token_type,
     });
 
-    if (!body.browser) {
-      return tokens;
-    }
+    if (!body.browser) return tokens;
+
+    const { APP_ENV, ALLOWED_COOKIE_DOMAIN } = process.env;
+
+    const cookieOptions = {
+      httpOnly: true,
+      domain: ALLOWED_COOKIE_DOMAIN,
+      secure: APP_ENV === 'production',
+    };
+
+    res
+      .cookie('gs.access', tokens.access, cookieOptions)
+      .cookie('gs.refresh', tokens.refresh, cookieOptions)
+      .send(tokens);
+  }
+
+  @Post('/refresh')
+  async refresh(@Body() body: TokenDto, @Req() req: Request) {
+    return this.authService.refreshAccessToken(body.token);
+  }
+
+  @Post('/revoke')
+  async revoke(@Body() body: TokenDto) {
+    this.authService.revokeRefreshToken(body.token);
+  }
+
+  @Get('/tokens')
+  async tokens(@Res() res: Response) {
+    const tokens = await this.authService.generateTokenPair('1234');
 
     const { APP_ENV, ALLOWED_COOKIE_DOMAIN } = process.env;
 
@@ -35,13 +70,22 @@ export class AuthController {
       .send(tokens);
   }
 
-  @Post('/refresh')
-  async refresh(@Body() body: TokenDto) {
-    return this.authService.refreshAccessToken(body.token);
+  @Get('/fallar')
+  @UseGuards(OnlyAuthorizedGuard)
+  async fallar(@Req() req: RequestSession): Promise<any> {
+    const access = req.cookies['gs.access'];
+    return access;
   }
 
-  @Post('/revoke')
-  async revoke(@Body() body: TokenDto) {
-    this.authService.revokeRefreshToken(body.token);
+  @Post('/logout')
+  async logout(@Res() res: Response) {
+    const removeCookieOptions = {
+      expires: new Date(-1),
+    };
+
+    res
+      .cookie('gs.access', '', removeCookieOptions)
+      .cookie('gs.refresh', '', removeCookieOptions)
+      .send();
   }
 }

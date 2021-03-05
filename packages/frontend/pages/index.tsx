@@ -2,6 +2,7 @@ import Head from "next/head";
 import GlobalLayout from "layouts/global.layout";
 import styles from "./index.module.scss";
 import Image from "next/image";
+import { parseCookieHeader } from "strict-cookie-parser";
 
 const NEXT_PUBLIC_TWITCH_CLIENT_ID = process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID;
 const NEXT_PUBLIC_TWITCH_CALLBACK_URL =
@@ -13,6 +14,28 @@ const oauthTwithUrl = [
   `response_type=token`,
   `scope=user:read:email channel:manage:redemptions`,
 ].join("&");
+
+// Helper to get cookies Map
+const getCookies = (ctx: any): Map<string, string> | null =>
+  parseCookieHeader(ctx.req.headers.cookie || "");
+
+// If users have token-access, redirect them to /app
+export async function getServerSideProps(ctx: any) {
+  const cookies = getCookies(ctx as any);
+
+  if (cookies && cookies.get("gs.access") !== undefined) {
+    return {
+      redirect: {
+        destination: "/app",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
 
 export default function Home() {
   return (

@@ -28,7 +28,10 @@ export interface AuthWithTwitchArgs {
 
 interface DecodedToken {
   [key: string]: string | number;
+  exp: number;
 }
+
+const ACCESS_TOKEN_EXPIRATION = '5s';
 
 @Injectable()
 export class AuthService {
@@ -50,7 +53,7 @@ export class AuthService {
 
     const accessTokenOptions = {
       subject: userId,
-      expiresIn: '1.5 hrs',
+      expiresIn: ACCESS_TOKEN_EXPIRATION,
     };
     const refreshTokenOptions = { subject: userId };
 
@@ -96,7 +99,7 @@ export class AuthService {
 
     const accessTokenOptions = {
       subject: userId,
-      expiresIn: '1.5 hrs',
+      expiresIn: ACCESS_TOKEN_EXPIRATION,
     };
 
     const access = await this.jwtService.signAsync({}, accessTokenOptions);
@@ -155,5 +158,9 @@ export class AuthService {
 
   decodeToken(token: string): DecodedToken {
     return this.jwtService.decode(token) as DecodedToken;
+  }
+
+  verifyToken(token: string): Promise<DecodedToken> {
+    return this.jwtService.verifyAsync(token) as Promise<DecodedToken>;
   }
 }

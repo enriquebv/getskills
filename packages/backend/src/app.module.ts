@@ -1,12 +1,8 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthMiddleware } from './auth/auth.middleware';
+import { AuthController } from './auth/auth.controller';
+import { JwtSessionMiddleware } from './auth/jwt-session.middleware';
 
 // Modules
 import { AuthModule } from './auth/auth.module';
@@ -28,6 +24,6 @@ import { UserModule } from './user/user.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('*');
+    consumer.apply(JwtSessionMiddleware).forRoutes('*');
   }
 }
