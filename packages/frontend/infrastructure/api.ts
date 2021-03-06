@@ -12,4 +12,4 @@ export const authWithTwitch = (body: TwitchParamsDto) =>
 export const refreshToken = () => instance.post("/auth/refresh");
 export const logout = () => instance.post("/auth/logout");
 
-export const testFallo = () => instance.get("/auth/fallar");
+export const getOwnUser = () => instance.get("/user/me");

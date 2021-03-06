@@ -1,12 +1,9 @@
-import { logout } from "infrastructure/api";
-import { useRouter } from "next/dist/client/router";
+import AppLayout from "layouts/app.layout";
 
 export default function BaseApp() {
-  const router = useRouter();
-  async function doLogout() {
-    await logout();
-    router.push("/");
-  }
-
-  return <button onClick={doLogout}>Logout</button>;
+  return (
+    <AppLayout title="Aplicación">
+      <b>Hola</b>
+    </AppLayout>
+  );
 }

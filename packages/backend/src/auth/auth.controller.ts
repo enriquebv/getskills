@@ -8,10 +8,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
-import { AuthService, RequestSession } from './auth.service';
+import { AuthService } from './auth.service';
 import { TokenDto } from './dto/token.dto';
 import { TwitchParamsDto } from './dto/twitch-params.dto';
-import { OnlyAuthorizedGuard } from './only-authorized.guard';
 
 @Controller('/api/auth')
 export class AuthController {
@@ -25,7 +24,10 @@ export class AuthController {
       type: body.token_type,
     });
 
-    if (!body.browser) return tokens;
+    if (!body.browser) {
+      res.send(tokens);
+      return;
+    }
 
     const { APP_ENV, ALLOWED_COOKIE_DOMAIN } = process.env;
 
@@ -68,13 +70,6 @@ export class AuthController {
       .cookie('gs.access', tokens.access, cookieOptions)
       .cookie('gs.refresh', tokens.refresh, cookieOptions)
       .send(tokens);
-  }
-
-  @Get('/fallar')
-  @UseGuards(OnlyAuthorizedGuard)
-  async fallar(@Req() req: RequestSession): Promise<any> {
-    const access = req.cookies['gs.access'];
-    return access;
   }
 
   @Post('/logout')

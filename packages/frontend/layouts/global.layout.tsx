@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./global.layout.module.scss";
+import Footer from "components/footer";
 
 export default function GlobalLayout({ children }): JSX.Element {
   return (
@@ -25,22 +26,7 @@ export default function GlobalLayout({ children }): JSX.Element {
         <div className={styles["container"]}>{children}</div>
       </main>
 
-      {/* Footer */}
-      <footer>
-        <div className={styles["container"]}>
-          <nav className={styles["left"]}>
-            <Link href="/contact">Contact</Link>
-            <a target="_blank" href="https://www.twitch.tv/enriquedev">
-              Built live in{" "}
-              <span className={styles.accent}>twitch/enriquedev</span>
-            </a>
-          </nav>
-          <nav className={styles["right"]}>
-            <Link href="/cookie-tos">Cookies & Terms of Service</Link>
-            <Link href="/cookie-tos">Roadmap</Link>
-          </nav>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

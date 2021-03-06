@@ -11,6 +11,7 @@ import {
 } from './db/refresh-token.model';
 import { TwitchApiRepository } from 'src/shared/twitch-api.repository';
 import { UserModule } from 'src/user/user.module';
+import { OnlyAuthorizedGuard } from './only-authorized.guard';
 
 @Module({
   imports: [
@@ -26,7 +27,12 @@ import { UserModule } from 'src/user/user.module';
     ]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, RefreshTokenRepository, TwitchApiRepository],
+  providers: [
+    AuthService,
+    RefreshTokenRepository,
+    TwitchApiRepository,
+    OnlyAuthorizedGuard,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}

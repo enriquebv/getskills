@@ -10,7 +10,6 @@ export class JwtSessionMiddleware implements NestMiddleware {
     if (req.cookies?.['gs.access'] !== undefined) {
       // process.env.APP_DEBUG === 'true' && console.info('Tokens existen');
       const token = req.cookies['gs.access'];
-
       const userId = this.authService.decodeToken(token).userId;
 
       if (!req.session) req.session = {};

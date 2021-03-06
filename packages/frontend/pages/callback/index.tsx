@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { TwitchParamsDto } from "dto/twitch-params.dto";
-import { authWithTwitch, testFallo } from "infrastructure/api";
+import { authWithTwitch } from "infrastructure/api";
 import { useRouter } from "next/dist/client/router";
 
 class WithoutHashException {}
@@ -43,7 +43,7 @@ function parseTwitchHash(hash: string): TwitchParamsDto {
   return parsed;
 }
 
-export default function Test() {
+export default function Callback() {
   const router = useRouter();
   const [errored, setErrored] = useState(false);
   const [showTryAgain, setShowTryAgain] = useState(true);
@@ -51,8 +51,8 @@ export default function Test() {
   async function auth() {
     try {
       const params = parseTwitchHash(window.location.hash);
-      await authWithTwitch(params);
-      // router.push("/app");
+      await authWithTwitch({ ...params, browser: true });
+      router.push("/app");
     } catch (error) {
       setErrored(true);
 

@@ -56,7 +56,7 @@ export default function Home() {
         </div>
         <div className={styles["images"]}>
           <Image
-            src="/index.png"
+            src="/home-illustration.png"
             width={400}
             height={400}
             objectFit="contain"

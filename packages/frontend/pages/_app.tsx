@@ -1,8 +1,10 @@
-import * as React from "react";
 import { AppProps } from "next/app";
 import Head from "next/head";
+import "tippy.js/dist/tippy.css";
 
 import "modern-normalize";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/themes/light.css";
 
 import "../styles/global.scss";
 

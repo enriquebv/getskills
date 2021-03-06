@@ -1,0 +1,89 @@
+.app-layout {
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+
+  .container {
+    margin: 0px auto;
+    max-width: 1200px;
+  }
+
+  .skeleton {
+    background: #fff !important;
+    opacity: 0.5;
+    cursor: default !important;
+  }
+
+  main {
+    flex: 1;
+    height: 100%;
+    margin-top: 20px;
+
+    .container {
+      display: flex;
+      flex-flow: row nowrap;
+      height: 100%;
+      padding-bottom: 20px;
+    }
+
+    aside {
+      width: 360px;
+      background: #010307;
+      border-radius: 40px;
+      min-height: 100%;
+    }
+
+    .content {
+      flex: 1;
+      display: flex;
+      flex-flow: column;
+      height: 100%;
+
+      header {
+        padding-left: 40px;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
+
+        h1 {
+          margin: 20px 0px;
+        }
+
+        .actions {
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+
+          b {
+            cursor: pointer;
+
+            .icon {
+              height: 1em;
+              margin-left: 5px;
+              margin-bottom: -2px;
+            }
+          }
+
+          .avatar {
+            height: 60px;
+            width: 60px;
+            border-radius: 60px;
+            background: #ddd;
+            margin-left: 15px;
+            background-size: cover;
+            cursor: pointer;
+          }
+        }
+      }
+
+      section {
+        flex: 1;
+        background: #010307;
+        border-radius: 40px;
+        margin-left: 40px;
+        padding: 40px;
+      }
+    }
+  }
+}

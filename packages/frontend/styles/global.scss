@@ -8,3 +8,38 @@ body {
 * {
   box-sizing: border-box;
 }
+
+.tippy-box.contextual-menu {
+  .tippy-content {
+    padding: 0;
+    overflow: hidden;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      li {
+        cursor: pointer;
+        min-width: 150px;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 10px;
+        user-select: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+
+        svg {
+          height: 1em;
+          margin-right: 5px;
+          color: #13141d;
+        }
+      }
+    }
+  }
+}

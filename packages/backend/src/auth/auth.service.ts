@@ -31,7 +31,7 @@ interface DecodedToken {
   exp: number;
 }
 
-const ACCESS_TOKEN_EXPIRATION = '5s';
+const ACCESS_TOKEN_EXPIRATION = '1.5h';
 
 @Injectable()
 export class AuthService {
@@ -102,7 +102,10 @@ export class AuthService {
       expiresIn: ACCESS_TOKEN_EXPIRATION,
     };
 
-    const access = await this.jwtService.signAsync({}, accessTokenOptions);
+    const access = await this.jwtService.signAsync(
+      { userId },
+      accessTokenOptions,
+    );
 
     return { access };
   }

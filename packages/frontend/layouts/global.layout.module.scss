@@ -57,37 +57,4 @@
       height: 100%;
     }
   }
-
-  footer {
-    background-color: #010307;
-    padding: 15px 20px;
-
-    .container {
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: space-between;
-
-      nav {
-        display: flex;
-        flex-flow: column;
-        a {
-          text-decoration: none;
-          color: #fff;
-          font-size: 13px;
-
-          &:not(:last-child) {
-            margin-bottom: 5px;
-          }
-        }
-
-        &.right a {
-          text-align: right;
-        }
-
-        .accent {
-          color: #2f44ff;
-        }
-      }
-    }
-  }
 }
