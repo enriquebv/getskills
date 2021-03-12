@@ -52,7 +52,7 @@ export default function AppLayout({ children, title }) {
   const MENU_LINKS = [
     {
       icon: faChartBar,
-      label: "Dashboard",
+      label: "Home",
       href: "/app",
     },
     {
