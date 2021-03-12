@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Res,
-  Req,
-  Get,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Post, Body, Res, Req, Get } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { AuthService } from './auth.service';
 import { TokenDto } from './dto/token.dto';
@@ -44,7 +36,7 @@ export class AuthController {
   }
 
   @Post('/refresh')
-  async refresh(@Body() body: TokenDto, @Req() req: Request) {
+  async refresh(@Body() body: TokenDto) {
     return this.authService.refreshAccessToken(body.token);
   }
 

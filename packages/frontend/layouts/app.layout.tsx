@@ -1,20 +1,28 @@
 import styles from "./app.layout.module.scss";
 import Footer from "components/footer";
 import { logout } from "infrastructure/api";
-import { useRouter } from "next/dist/client/router";
+import { useRouter } from "next/router";
 import useUser from "lib/use-user";
 import ContextualMenu from "components/contextual-menu";
 import {
+  faAddressBook,
   faCaretDown,
   faSignOutAlt,
   faUserAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { useToasts } from "react-toast-notifications";
+import { faChartBar } from "@fortawesome/free-regular-svg-icons";
+import Link from "next/link";
 
 export default function AppLayout({ children, title }) {
   const router = useRouter();
-  const { user, isLoading } = useUser();
+  const { addToast } = useToasts();
+
+  const { user } = useUser({
+    redirect: true,
+  });
   const [contextualMenu, setContextualMenu] = useState(null);
 
   const profileOptions = [
@@ -34,8 +42,25 @@ export default function AppLayout({ children, title }) {
 
   async function doLogout() {
     await logout();
+    addToast("You logged out.", {
+      appearance: "info",
+      autoDismiss: true,
+    });
     router.push("/");
   }
+
+  const MENU_LINKS = [
+    {
+      icon: faChartBar,
+      label: "Dashboard",
+      href: "/app",
+    },
+    {
+      icon: faAddressBook,
+      label: "Giveaway",
+      href: "/app/giveaway",
+    },
+  ];
 
   function openContextualMenu() {
     contextualMenu.show();
@@ -45,7 +70,25 @@ export default function AppLayout({ children, title }) {
     <div className={styles["app-layout"]}>
       <main>
         <div className={styles["container"]}>
-          <aside></aside>
+          <aside>
+            <p className={styles["title"]}>GetSkills.live</p>
+            <nav className={styles["links"]}>
+              <ul>
+                {MENU_LINKS.map((link) => (
+                  <Link href={link.href} key={link.href}>
+                    <li
+                      className={
+                        router.pathname === link.href ? styles.active : ""
+                      }
+                    >
+                      <FontAwesomeIcon icon={link.icon} />
+                      {link.label}
+                    </li>
+                  </Link>
+                ))}
+              </ul>
+            </nav>
+          </aside>
           <div className={styles["content"]}>
             <header>
               <h1>{title}</h1>

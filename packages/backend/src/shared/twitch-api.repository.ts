@@ -6,6 +6,14 @@ interface AccessToken {
   accessToken: string;
 }
 
+interface UserId {
+  twitchId: string;
+}
+
+interface RewardId {
+  rewardId: string;
+}
+
 export class TwitchApiException extends HttpException {
   protected originalError: AxiosError;
 
@@ -52,5 +60,33 @@ export class TwitchApiRepository {
     const [user] = response.data.data;
 
     return user;
+  }
+
+  async getChannelPointsRewards(config: AccessToken & UserId): Promise<any> {
+    const response = await this.helix.get(
+      `/channel_points/custom_rewards?broadcaster_id=${config.twitchId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${config.accessToken}`,
+        },
+      },
+    );
+
+    return response.data.data;
+  }
+
+  async getChannelPointsRedemptions(
+    config: AccessToken & UserId & RewardId,
+  ): Promise<any> {
+    const response = await this.helix.get(
+      `/channel_points/custom_rewards/redemptions?broadcaster_id=${config.twitchId}&reward_id=${config.rewardId}&status=FULFILLED`,
+      {
+        headers: {
+          Authorization: `Bearer ${config.accessToken}`,
+        },
+      },
+    );
+
+    return response.data.data;
   }
 }

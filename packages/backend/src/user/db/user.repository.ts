@@ -27,8 +27,8 @@ export class UserRepository extends BaseRepository {
   }
 
   async updateTwitchAccessToken(id: string, accessToken) {
-    const user = await this.userModel.findById(id);
-    user.twitch.accessToken = accessToken;
-    return user.save();
+    return this.userModel.findByIdAndUpdate(id, {
+      'twitch.accessToken': accessToken,
+    });
   }
 }
