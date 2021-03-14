@@ -5,9 +5,13 @@ import useUser from "lib/use-user";
 import oauthTwithUrl from "lib/twitch-oauth-url";
 import { logout } from "infrastructure/api";
 import { useToasts } from "react-toast-notifications";
+import ContextualMenu from "components/contextual-menu";
+import { faSadCry } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 
 export default function GlobalLayout({ children }): JSX.Element {
   const { user } = useUser();
+  const router = useRouter();
   const { addToast } = useToasts();
 
   return (
@@ -37,6 +41,31 @@ export default function GlobalLayout({ children }): JSX.Element {
             </a>
             <a href="#">Features</a>
             <a href="#">Contact</a>
+            <p className={styles["lang"]}>
+              <span>
+                <Link href={router.pathname} locale="en">
+                  <span
+                    className={
+                      router.locale === "en" ? styles["active"] : undefined
+                    }
+                  >
+                    EN
+                  </span>
+                </Link>
+              </span>
+              <span className={styles["separator"]}>|</span>
+              <span>
+                <Link href={router.pathname} locale="es">
+                  <span
+                    className={
+                      router.locale === "es" ? styles["active"] : undefined
+                    }
+                  >
+                    ES
+                  </span>
+                </Link>
+              </span>
+            </p>
           </nav>
         </div>
       </header>

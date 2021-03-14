@@ -1,4 +1,5 @@
 import { ChangeEventHandler } from "react";
+import styles from "./styles.module.scss";
 
 interface InputProps {
   placeholder?: string;
@@ -13,6 +14,7 @@ export default function Input({
 }: InputProps) {
   return (
     <input
+      className={styles["ui-input"]}
       type="text"
       placeholder={placeholder}
       onChange={(event) => {

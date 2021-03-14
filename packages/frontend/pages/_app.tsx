@@ -1,6 +1,7 @@
 import { AppProps } from "next/app";
 import { ToastProvider } from "react-toast-notifications";
 import Head from "next/head";
+import { appWithTranslation } from "next-i18next";
 
 // Styles
 import "tippy.js/dist/tippy.css";
@@ -10,7 +11,7 @@ import "tippy.js/themes/light.css";
 
 import "styles/global.scss";
 
-export default function App({ Component, pageProps }: AppProps): JSX.Element {
+function App({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <>
       <Head>
@@ -23,3 +24,5 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
     </>
   );
 }
+
+export default appWithTranslation(App);

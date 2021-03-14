@@ -1,7 +1,6 @@
 import Tippy from "@tippyjs/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { useEffect, useRef, useState } from "react";
 
 interface OptionInterface {
   label: string;
@@ -25,7 +24,7 @@ export default function ContextualMenu({
   return (
     <Tippy
       className="contextual-menu"
-      onCreate={(tip) => onCreate(tip)}
+      onCreate={(tip) => (onCreate === null ? "" : onCreate(tip))}
       content={
         <ul>
           {options.map((option: OptionInterface) => (

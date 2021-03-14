@@ -45,6 +45,37 @@
             color: #2f44ff;
           }
         }
+
+        .lang {
+          display: inline-block;
+          margin-left: 20px;
+
+          span {
+            cursor: pointer;
+            font-weight: bold;
+
+            &.active {
+              color: #2f44ff;
+            }
+
+            & a {
+              margin-left: 0px;
+            }
+
+            &:first-child {
+              margin-right: 5px;
+            }
+
+            &:nth-child(2) {
+              font-weight: bold;
+              font-size: 1.2em;
+            }
+
+            &:last-child {
+              margin-left: 5px;
+            }
+          }
+        }
       }
     }
   }

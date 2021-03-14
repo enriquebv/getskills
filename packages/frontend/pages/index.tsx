@@ -5,9 +5,14 @@ import Image from "next/image";
 import useUser from "lib/use-user";
 import Link from "next/link";
 import oauthTwithUrl from "lib/twitch-oauth-url";
+import { useTranslation } from "react-i18next";
+import { serverSideTranslationsProps } from "lib/server-side-translation";
+
+export const getStaticProps = serverSideTranslationsProps(["common", "footer"]);
 
 export default function Home() {
   const { user } = useUser();
+  const { t } = useTranslation("common");
 
   return (
     <GlobalLayout>
@@ -16,7 +21,7 @@ export default function Home() {
       </Head>
       <div className={styles["page-index"]}>
         <div className={styles["text"]}>
-          <h1>BRING SKILLS TO YOUR TWITCH CHANNEL</h1>
+          <h1>{t("h1")}</h1>
           <p>
             Using Twitch Channel Points, you can create new viewer experiences
             to your channel. Bids, Discord roles, leaderboars, etc.{" "}
