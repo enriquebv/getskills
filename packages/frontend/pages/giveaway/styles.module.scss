@@ -1,0 +1,21 @@
+.giveaway-landing {
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  padding-top: 60px;
+
+  h1,
+  h2 {
+    margin: 0;
+  }
+
+  h1 {
+    margin-top: 0.5em;
+    font-size: 4em;
+  }
+
+  h2 {
+    color: #6441a5;
+  }
+}

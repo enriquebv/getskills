@@ -135,6 +135,7 @@ export class AuthService {
     // If user is not registered, create it
     if (!storedUser) {
       storedUser = await this.userRepository.createUser({
+        user: twitchUser.login,
         username: twitchUser.display_name,
         email: twitchUser.email,
         twitch: {

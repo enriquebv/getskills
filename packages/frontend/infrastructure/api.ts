@@ -19,3 +19,10 @@ export const logout = async () => {
 
 export const getOwnUser = () => instance.get("/user");
 export const getStats = () => instance.get("/user/stats");
+export const createGiveaway = (body) => instance.post("/giveaway", body);
+export const updateGiveaway = (id: string, body) =>
+  instance.patch(`/giveaway/${id}`, body);
+export const getGiveawayByUser = (user: string) =>
+  instance.get(`giveaway/author/twitch/${user}`);
+export const cancelGiveaway = (id: string) =>
+  instance.post(`/giveaway/cancel/${id}`);

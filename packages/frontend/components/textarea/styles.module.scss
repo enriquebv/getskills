@@ -1,0 +1,51 @@
+.ui-textarea {
+  &.contrast {
+    textarea {
+      background: #1d1f2e;
+    }
+  }
+
+  &.disabled {
+    textarea {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  textarea {
+    border: 1px solid #666a7c;
+    width: 100%;
+    background: none;
+    border-radius: 5px;
+    color: #fff;
+    padding: 0px 20px;
+    padding: 15px 20px;
+    resize: none;
+    font-family: "Raleway", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+
+    &:focus {
+      outline: none;
+      border-color: #fff;
+    }
+  }
+
+  &.invalid {
+    textarea {
+      border-color: #c0392b;
+
+      &:focus {
+        border-color: #c0392b;
+      }
+    }
+
+    .invalid-label {
+      color: #c0392b;
+      font-size: 0.8em;
+      margin-left: 20px;
+      margin-top: 5px;
+      display: block;
+    }
+  }
+}

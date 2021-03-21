@@ -1,5 +1,4 @@
-import { Model, Document } from "mongoose";
-
+import { Model, Document, MongooseQueryOptions, UpdateQuery } from 'mongoose';
 
 export class BaseRepository {
   private model: Model<any> = null;
@@ -8,7 +7,11 @@ export class BaseRepository {
     this.model = model;
   }
 
-  getById(id: string) {
-    return this.model.findById(id);
+  getById<T = any>(id: string): Promise<T> {
+    return (this.model.findById(id) as unknown) as any;
+  }
+
+  updateById(id, update) {
+    return this.model.findByIdAndUpdate(id, update);
   }
 }

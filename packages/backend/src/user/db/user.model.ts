@@ -15,6 +15,9 @@ export interface UserTwitch {
 
 @Schema({ collection: 'user', ...SCHEMA_TIMESTAMP_CONFIG })
 export class UserModel extends BaseModel {
+  @Prop({ required: true, unique: true })
+  user: string;
+
   @Prop({ required: true })
   username: string;
 

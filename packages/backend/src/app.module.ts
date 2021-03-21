@@ -6,6 +6,7 @@ import { AddSessionFromTokenMiddleware } from './auth/add-session-from-token.mid
 // Modules
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { GiveawayModule } from './giveaway/giveaway.module';
 
 @Module({
   imports: [
@@ -14,11 +15,16 @@ import { UserModule } from './user/user.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URI'),
+        useFindAndModify: false,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
       }),
       inject: [ConfigService],
     }),
     AuthModule,
     UserModule,
+    GiveawayModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -5,6 +5,7 @@ import { UserDocument, UserModel, UserTwitch } from './user.model';
 import { BaseRepository } from 'src/shared/base.repository';
 
 export interface CreateUserOptions {
+  user: string;
   username: string;
   email: string;
   twitch?: UserTwitch;
@@ -30,5 +31,9 @@ export class UserRepository extends BaseRepository {
     return this.userModel.findByIdAndUpdate(id, {
       'twitch.accessToken': accessToken,
     });
+  }
+
+  async getByUser(user: string) {
+    return this.userModel.findOne({ user });
   }
 }

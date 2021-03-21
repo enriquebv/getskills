@@ -1,6 +1,12 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import { HttpException, Injectable } from '@nestjs/common';
+
+// Options
+import { CreateCustomRewardOptions } from './dto/create-custom-reward-options.dto';
+
+// Responses
 import { TwitchUserDto } from './dto/twitch-user.dto';
+import { CreateCustomRewardResponseDto } from './dto/create-custom-reward-response.dto';
 
 interface AccessToken {
   accessToken: string;
@@ -8,10 +14,6 @@ interface AccessToken {
 
 interface UserId {
   twitchId: string;
-}
-
-interface RewardId {
-  rewardId: string;
 }
 
 export class TwitchApiException extends HttpException {
@@ -62,9 +64,13 @@ export class TwitchApiRepository {
     return user;
   }
 
-  async getChannelPointsRewards(config: AccessToken & UserId): Promise<any> {
-    const response = await this.helix.get(
+  async createCustomReward(
+    config: AccessToken & UserId,
+    options: CreateCustomRewardOptions,
+  ): Promise<CreateCustomRewardResponseDto> {
+    const response = await this.helix.post(
       `/channel_points/custom_rewards?broadcaster_id=${config.twitchId}`,
+      options,
       {
         headers: {
           Authorization: `Bearer ${config.accessToken}`,
@@ -72,14 +78,12 @@ export class TwitchApiRepository {
       },
     );
 
-    return response.data.data;
+    return response.data.data[0];
   }
 
-  async getChannelPointsRedemptions(
-    config: AccessToken & UserId & RewardId,
-  ): Promise<any> {
-    const response = await this.helix.get(
-      `/channel_points/custom_rewards/redemptions?broadcaster_id=${config.twitchId}&reward_id=${config.rewardId}&status=FULFILLED`,
+  async deleteCustomReward(config: AccessToken & UserId, id: string) {
+    const response = await this.helix.delete(
+      `/channel_points/custom_rewards?broadcaster_id=${config.twitchId}&id=${id}`,
       {
         headers: {
           Authorization: `Bearer ${config.accessToken}`,
@@ -87,6 +91,6 @@ export class TwitchApiRepository {
       },
     );
 
-    return response.data.data;
+    return response;
   }
 }

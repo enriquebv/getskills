@@ -5,8 +5,6 @@ import useUser from "lib/use-user";
 import oauthTwithUrl from "lib/twitch-oauth-url";
 import { logout } from "infrastructure/api";
 import { useToasts } from "react-toast-notifications";
-import ContextualMenu from "components/contextual-menu";
-import { faSadCry } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 
 export default function GlobalLayout({ children }): JSX.Element {
