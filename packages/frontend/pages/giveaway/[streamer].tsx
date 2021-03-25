@@ -2,6 +2,9 @@ import styles from "./styles.module.scss";
 import { getGiveawayByUser } from "infrastructure/api";
 import { GetServerSideProps } from "next";
 import SSRError from "lib/ssr-error";
+// import { serverSideTranslationsProps } from "lib/server-side-translation";
+
+// export const getStaticProps = serverSideTranslationsProps(["common", "footer"]);
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { streamer } = query;

@@ -11,12 +11,12 @@ export default function Footer() {
     <footer className={styles["footer"]}>
       <div className={styles["container"]}>
         <nav className={styles["left"]}>
-          <Link href="/contact">Contact</Link>
+          <Link href="/contact">{t("contact")}</Link>
+          <Link href="/roadmap">Roadmap</Link>
           <a target="_blank" href="https://www.twitch.tv/enriquedev">
             {t("built-live-in")}{" "}
             <span className={styles.accent}>twitch/enriquedev</span>
           </a>
-          <Link href="/cookie-tos">Roadmap</Link>
         </nav>
         <nav className={styles["right"]}>
           <Link href={router.pathname} locale="en">
@@ -25,7 +25,10 @@ export default function Footer() {
           <Link href={router.pathname} locale="es">
             Español
           </Link>
-          <Link href="/cookie-tos">{t("cookies-terms")}</Link>
+          <span>
+            <Link href="/cookie-terms">{t("cookies-terms")}</Link> |{" "}
+            <Link href="/privacy">{t("privacy")}</Link>
+          </span>
         </nav>
       </div>
     </footer>

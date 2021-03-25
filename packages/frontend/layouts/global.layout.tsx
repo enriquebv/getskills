@@ -6,11 +6,13 @@ import oauthTwithUrl from "lib/twitch-oauth-url";
 import { logout } from "infrastructure/api";
 import { useToasts } from "react-toast-notifications";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 export default function GlobalLayout({ children }): JSX.Element {
   const { user } = useUser();
   const router = useRouter();
   const { addToast } = useToasts();
+  const { t } = useTranslation("common");
 
   return (
     <div className={styles["global-layout"]}>
@@ -21,6 +23,7 @@ export default function GlobalLayout({ children }): JSX.Element {
             <p className={styles["logo"]}>GetSkills.live</p>
           </Link>
           <nav>
+            <a href="/contact">{t("contact")}</a>
             <a
               href={oauthTwithUrl}
               onClick={async (event) => {
@@ -35,10 +38,8 @@ export default function GlobalLayout({ children }): JSX.Element {
               }}
               className={styles["active"]}
             >
-              {user ? "Logout" : "Login"}
+              {user ? t("logout") : t("login")}
             </a>
-            <a href="#">Features</a>
-            <a href="#">Contact</a>
             <p className={styles["lang"]}>
               <span>
                 <Link href={router.pathname} locale="en">

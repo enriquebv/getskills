@@ -19,6 +19,7 @@ import trophyIcon from "@iconify/icons-mdi-light/trophy";
 import bullhornIcon from "@iconify/icons-mdi-light/bullhorn";
 import cogIcon from "@iconify/icons-mdi-light/cog";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 
 interface AppLayoutProps {
   title: string;
@@ -30,6 +31,7 @@ export default function AppLayout({
   title,
   disableDefaultBackground,
 }: PropsWithChildren<AppLayoutProps>) {
+  const { t } = useTranslation("common");
   const router = useRouter();
   const { addToast } = useToasts();
   const { user } = useUser({
@@ -40,14 +42,14 @@ export default function AppLayout({
 
   const profileOptions = [
     {
-      label: "Profile",
+      label: t("profile"),
       icon: faUserAlt,
       handler() {
         console.info("user");
       },
     },
     {
-      label: "Logout",
+      label: t("logout"),
       icon: faSignOutAlt,
       handler: doLogout,
     },
@@ -65,35 +67,35 @@ export default function AppLayout({
   const MENU_LINKS = [
     {
       icon: homeIcon,
-      label: "Home",
+      label: "home",
       href: "/app",
     },
     {
       icon: trophyIcon,
-      label: "Channel Points Giveaway",
+      label: "channel-points-giveaway",
       href: "/app/channel-points-giveaway",
     },
     {
       icon: cogIcon,
-      label: "WebHooks",
+      label: "webhooks",
       href: "/app/bits-giveaway",
       soon: true,
     },
     {
       icon: trophyIcon,
-      label: "Bits Giveaway",
+      label: "bits-giveaway",
       href: "/app/bits-giveaway",
       soon: true,
     },
     {
       icon: bullhornIcon,
-      label: "Channel Points Bids",
+      label: "channel-points-bids",
       href: "/app/channel-points-bids",
       soon: true,
     },
     {
       icon: bullhornIcon,
-      label: "Channel Points Discord",
+      label: "channel-points-discord",
       href: "/app/channel-points-discord",
       soon: true,
     },
@@ -123,7 +125,7 @@ export default function AppLayout({
                         <span className={styles["icon"]}>
                           <InlineIcon icon={link.icon} />
                         </span>
-                        {link.label}
+                        {t(link.label)}
                       </span>
                       {link.soon && (
                         <span className={styles["soon-label"]}>Soon!</span>

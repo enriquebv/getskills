@@ -7,6 +7,7 @@ import { AddSessionFromTokenMiddleware } from './auth/add-session-from-token.mid
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { GiveawayModule } from './giveaway/giveaway.module';
+import { TwitchModule } from './twitch/twitch.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { GiveawayModule } from './giveaway/giveaway.module';
     AuthModule,
     UserModule,
     GiveawayModule,
+    TwitchModule,
   ],
 })
 export class AppModule implements NestModule {

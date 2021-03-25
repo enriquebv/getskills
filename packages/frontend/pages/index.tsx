@@ -8,11 +8,15 @@ import oauthTwithUrl from "lib/twitch-oauth-url";
 import { useTranslation } from "react-i18next";
 import { serverSideTranslationsProps } from "lib/server-side-translation";
 
-export const getStaticProps = serverSideTranslationsProps(["common", "footer"]);
+export const getStaticProps = serverSideTranslationsProps([
+  "common",
+  "home",
+  "footer",
+]);
 
 export default function Home() {
   const { user } = useUser();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation("home");
 
   return (
     <GlobalLayout>
@@ -22,17 +26,14 @@ export default function Home() {
       <div className={styles["page-index"]}>
         <div className={styles["text"]}>
           <h1>{t("h1")}</h1>
-          <p>
-            Using Twitch Channel Points, you can create new viewer experiences
-            to your channel. Bids, Discord roles, leaderboars, etc.{" "}
-          </p>
+          <p>{t("text")}</p>
           {user ? (
             <Link href="/app">
               <a className={styles["login"]}>Go to App</a>
             </Link>
           ) : (
             <a className={styles["login"]} href={oauthTwithUrl}>
-              Login with Twitch
+              {t("login-with-twitch")}
             </a>
           )}
         </div>

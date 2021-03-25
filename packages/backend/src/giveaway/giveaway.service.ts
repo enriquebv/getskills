@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { TwitchApiRepository } from 'src/shared/twitch-api.repository';
+import { TwitchApiRepository } from 'src/twitch/twitch-api.repository';
+import { TwitchService } from 'src/twitch/twitch.service';
 import { UserRepository } from 'src/user/db/user.repository';
 import { GiveawayModel, GiveawayModelResolved } from './db/giveaway.model';
 import { GiveawayRepository } from './db/giveaway.repository';
@@ -16,12 +17,23 @@ interface CreateGiveawayOptionsInterface extends CreateGiveawayDto {
   author: string;
 }
 
+interface AddChannelPointsGiveawayParticipantOptions {
+  broadcasterId: string;
+  rewardId: string;
+  userInfo: {
+    id: string;
+    user: string;
+    name: string;
+  };
+}
+
 @Injectable()
 export class GiveawayService {
   constructor(
     private readonly giveawayRepository: GiveawayRepository,
     private readonly userRepository: UserRepository,
     private readonly twitchApiRepository: TwitchApiRepository,
+    private readonly twitchService: TwitchService,
   ) {}
 
   async createGiveaway(
@@ -126,6 +138,11 @@ export class GiveawayService {
       rewardOptions,
     );
 
+    this.twitchService.createChannelPointsWebhook({
+      twitchId,
+      rewardId: reward.id,
+    });
+
     return this.giveawayRepository.createGiveaway({
       ...options,
       rewardInfo: {
@@ -164,5 +181,21 @@ export class GiveawayService {
 
       throw error;
     }
+  }
+
+  async addChannelPointsGiveawayParticipant(
+    options: AddChannelPointsGiveawayParticipantOptions,
+  ) {
+    const giveaway = await this.giveawayRepository.getGiveawayByRewardId(
+      options.rewardId,
+    );
+
+    // TODO check silent errors and add it to a log view
+    if (!giveaway) return;
+
+    return this.giveawayRepository.addGiveawayRepository(
+      giveaway.id,
+      options.userInfo,
+    );
   }
 }

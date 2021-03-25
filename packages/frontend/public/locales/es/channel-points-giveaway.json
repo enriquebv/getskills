@@ -1,0 +1,8 @@
+{
+  "title": "Titulo",
+  "description": "Descripción",
+  "rewards-info": "Vista previo de los puntos del canal que se crearan (automaticamente) cuando crees el sorteo. Asi es como se vera en la seccion \"Puntos del Canal\" de tu chat.",
+  "create": "Crear",
+  "cancel": "Cancelar",
+  "view": "Ver"
+}

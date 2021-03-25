@@ -17,8 +17,12 @@ export class GiveawayModel extends BaseModel {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ required: true, type: [String], default: [] })
-  participants: string[];
+  @Prop({ required: true, type: [mongoose.Schema.Types.Mixed], default: [] })
+  participants: {
+    id: string;
+    user: string;
+    name: string;
+  }[];
 
   @Prop({
     required: true,

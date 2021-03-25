@@ -5,8 +5,12 @@ import { useEffect, useState } from "react";
 import { TwitchParamsDto } from "dto/twitch-params.dto";
 import { authWithTwitch } from "infrastructure/api";
 import { useRouter } from "next/dist/client/router";
+import { serverSideTranslationsProps } from "lib/server-side-translation";
+import { useTranslation } from "react-i18next";
 
 class WithoutHashException {}
+
+export const getStaticProps = serverSideTranslationsProps(["common", "footer"]);
 
 class BadTwitchParams {
   public params: any = {};
@@ -47,6 +51,7 @@ export default function Callback() {
   const router = useRouter();
   const [errored, setErrored] = useState(false);
   const [showTryAgain, setShowTryAgain] = useState(true);
+  const { t } = useTranslation("common");
 
   async function auth() {
     try {
@@ -88,7 +93,7 @@ export default function Callback() {
       {!errored ? (
         <h1>
           <FontAwesomeIcon icon={faCircleNotch} />
-          Loading...
+          {t("loading")}...
         </h1>
       ) : (
         <>

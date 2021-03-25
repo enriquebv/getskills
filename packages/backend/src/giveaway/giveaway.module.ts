@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TwitchApiRepository } from 'src/shared/twitch-api.repository';
+import { TwitchModule } from 'src/twitch/twitch.module';
 import { UserModule } from 'src/user/user.module';
 import { GiveawayModel, GiveawaySchema } from './db/giveaway.model';
 import { GiveawayRepository } from './db/giveaway.repository';
@@ -9,12 +9,14 @@ import { GiveawayService } from './giveaway.service';
 
 @Module({
   imports: [
-    UserModule,
+    forwardRef(() => TwitchModule),
+    forwardRef(() => UserModule),
     MongooseModule.forFeature([
       { name: GiveawayModel.name, schema: GiveawaySchema },
     ]),
   ],
   controllers: [GiveawayController],
-  providers: [GiveawayService, GiveawayRepository, TwitchApiRepository],
+  providers: [GiveawayService, GiveawayRepository],
+  exports: [GiveawayService],
 })
 export class GiveawayModule {}

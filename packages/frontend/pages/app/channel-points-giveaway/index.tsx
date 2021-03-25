@@ -21,6 +21,9 @@ import {
 } from "infrastructure/api";
 import ChannelPointsReward from "components/channel-points-reward";
 import { useRouter } from "next/router";
+import { serverSideTranslationsProps } from "lib/server-side-translation";
+
+export const getStaticProps = serverSideTranslationsProps(["common", "footer"]);
 
 export default function Giveaway() {
   const router = useRouter();

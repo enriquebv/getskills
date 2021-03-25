@@ -1,13 +1,19 @@
 import { UserDto } from 'src/user/dto/user.dto';
 import { GiveawayModelResolved } from '../db/giveaway.model';
 
+interface UserInfo {
+  id: string;
+  user: string;
+  name: string;
+}
+
 export default class GiveawayDto {
   id: string;
   title: string;
   description: string;
   author: UserDto;
   active: boolean;
-  participants: [];
+  participants: UserInfo[];
   rewardInfo: {
     id: string;
     title: string;
@@ -21,5 +27,6 @@ export default class GiveawayDto {
     this.author = new UserDto(partial.author);
     this.active = partial.active;
     this.rewardInfo = partial.rewardInfo;
+    this.participants = partial.participants;
   }
 }

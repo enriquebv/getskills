@@ -20,6 +20,12 @@ interface CreateGivewayOptionsInterface {
   };
 }
 
+interface AddGiveawayParticipantOptions {
+  id: string;
+  user: string;
+  name: string;
+}
+
 @Injectable()
 export class GiveawayRepository extends BaseRepository {
   constructor(
@@ -74,5 +80,20 @@ export class GiveawayRepository extends BaseRepository {
     return (giveaway
       .populate('author')
       .execPopulate() as unknown) as GiveawayModelResolved;
+  }
+
+  async getGiveawayByRewardId(rewardId: string) {
+    return this.giveawayModel.findOne({ 'rewardInfo.id': rewardId });
+  }
+
+  async addGiveawayRepository(
+    id: string,
+    participantInfo: AddGiveawayParticipantOptions,
+  ) {
+    await this.giveawayModel.findByIdAndUpdate(id, {
+      $push: { participants: participantInfo },
+    });
+
+    return this.getResolvedById(id);
   }
 }

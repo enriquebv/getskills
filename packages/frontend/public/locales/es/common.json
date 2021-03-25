@@ -1,3 +1,13 @@
 {
-  "h1": "CONSIGUE SKILLS PARA TU CANAL DE TWITCH"
+  "contact": "Contacto",
+  "login": "Entrar",
+  "logout": "Cerrar sesión",
+  "loading": "Cargando",
+  "profile": "Perfil",
+  "home": "Portada",
+  "channel-points-giveaway": "Sorteos con Puntos del Canal",
+  "webhooks": "WebHooks",
+  "bits-giveaway": "Sorteo con Bits",
+  "channel-points-bids": "Pujas con Bits",
+  "channel-points-discord": "Discord con Puntos del Canal"
 }

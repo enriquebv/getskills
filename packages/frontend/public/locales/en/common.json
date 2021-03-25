@@ -1,3 +1,13 @@
 {
-  "h1": "BRING SKILLS TO YOUR TWITCH CHANNEL"
+  "contact": "Contact",
+  "login": "Login",
+  "logout": "Logout",
+  "loading": "Loading",
+  "profile": "Profile",
+  "home": "Home",
+  "channel-points-giveaway": "Channel Points Giveaway",
+  "webhooks": "WebHooks",
+  "bits-giveaway": "Bits Giveaway",
+  "channel-points-bids": "Channel Points Bid",
+  "channel-points-discord": "Channel Points Discord"
 }

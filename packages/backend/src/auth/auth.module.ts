@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
@@ -9,14 +9,15 @@ import {
   RefreshTokenSchema,
   RefreshTokenModel,
 } from './db/refresh-token.model';
-import { TwitchApiRepository } from 'src/shared/twitch-api.repository';
 import { UserModule } from 'src/user/user.module';
 import { OnlyAuthorizedGuard } from './only-authorized.guard';
+import { TwitchModule } from 'src/twitch/twitch.module';
 
 @Module({
   imports: [
     ConfigModule,
     UserModule,
+    TwitchModule,
     JwtModule.registerAsync({
       useFactory: async () => ({
         secret: process.env.JWT_SECRET,
@@ -27,12 +28,7 @@ import { OnlyAuthorizedGuard } from './only-authorized.guard';
     ]),
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    RefreshTokenRepository,
-    TwitchApiRepository,
-    OnlyAuthorizedGuard,
-  ],
+  providers: [AuthService, RefreshTokenRepository, OnlyAuthorizedGuard],
   exports: [AuthService],
 })
 export class AuthModule {}

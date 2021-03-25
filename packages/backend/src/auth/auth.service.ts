@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenRepository } from './db/refresh-token.repository';
-import { TwitchApiRepository } from 'src/shared/twitch-api.repository';
+import { TwitchApiRepository } from 'src/twitch/twitch-api.repository';
 import { InvalidTwitchScopesException } from './exception/invalid-twitch-scopes.exception';
 import { RevokedTokenException } from './exception/revoked-token.exeception';
 import { InvalidTwitchTokenTypeException } from './exception/invalid-twitch-token-type.exception';
