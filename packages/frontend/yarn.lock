@@ -1081,6 +1081,21 @@
     gud "^1.0.0"
     warning "^4.0.3"
 
+"@iconify/icons-brandico@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-brandico/-/icons-brandico-1.1.0.tgz#8a6b8b3c67f967b067b207985974fa6cad984984"
+  integrity sha512-POyskswytrlbekUamxdGNvYvCDg2Fa1mn7MNvcgOe1hIoDo48g5HRUE4nFqsoE/n0WftD0oX8fJaRWQjYQi2+w==
+
+"@iconify/icons-bx@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-bx/-/icons-bx-1.1.0.tgz#6ce5251aee266ad5a8ee3effab1d031281edb61e"
+  integrity sha512-4TyjNcB4hO5e5pTe/M0xaW1vqK92DcK3y9n0cDx/bUaBBa/xt2K3OM6uBGVbna2yIcmDvQJGPJpd5hnXtgZrBw==
+
+"@iconify/icons-fe@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-fe/-/icons-fe-1.1.0.tgz#51a395d5f0d6d7f4b2d38538facf451c75279454"
+  integrity sha512-CnoY6x3DTFI9P22oY+qL1bcmTws1kxIxr7wqzNsdEoSawmrbDry0yRxD3ovBGJi7vGISbfFKyt4M7gaWUhybbg==
+
 "@iconify/icons-mdi-light@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@iconify/icons-mdi-light/-/icons-mdi-light-1.1.0.tgz#6555398866065686d89d77f986c395fe97f12364"
@@ -1402,6 +1417,11 @@ agent-base@6:
   integrity sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==
   dependencies:
     debug "4"
+
+animejs@^3.2.x:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/animejs/-/animejs-3.2.1.tgz#de9fe2e792f44a777a7fdf6ae160e26604b0cdda"
+  integrity sha512-sWno3ugFryK5nhiDm/2BKeFCpZv7vzerWUcUPyAZLDhMek3+S/p418ldZJbJXo5ZUOpfm2kP2XRO4NJcULMy9A==
 
 anser@1.4.9:
   version "1.4.9"
@@ -4070,6 +4090,21 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-anime@^4.0.3, react-anime@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/react-anime/-/react-anime-4.0.4.tgz#60f3d179e730c63a117e012b2799230ea7dc59ea"
+  integrity sha512-keyFmNCVEeKPT13TaHuw7p4OWsHaWI3/u+ivTcxUbmZalKnEQKhxuSTJTlYJLHbMCL2kWoLdLZXz/iaJ+CxGVA==
+  dependencies:
+    animejs "^3.2.x"
+    react-anime "^4.0.3"
+
+react-confetti@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/react-confetti/-/react-confetti-6.0.1.tgz#d4f57b5a021dd908a6243b8f63b6009b00818d10"
+  integrity sha512-ZpOTBrqSNhWE4rRXCZ6E6U+wGd7iYHF5MGrqwikoiBpgBq9Akdu0DcLW+FdFnLjyZYC+VfAiV2KeFgYRMyMrkA==
+  dependencies:
+    tween-functions "^1.2.0"
+
 react-datepicker@^2.0.0:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-2.16.0.tgz#6bd68de94f5fb38c8f6a4370f3c612837c700e4e"
@@ -4896,6 +4931,11 @@ tunnel-agent@^0.6.0:
   integrity sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0=
   dependencies:
     safe-buffer "^5.0.1"
+
+tween-functions@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/tween-functions/-/tween-functions-1.2.0.tgz#1ae3a50e7c60bb3def774eac707acbca73bbc3ff"
+  integrity sha1-GuOlDnxguz3vd06scHrLynO7w/8=
 
 type-fest@^0.7.1:
   version "0.7.1"

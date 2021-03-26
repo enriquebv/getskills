@@ -6,7 +6,6 @@
   },
   "version": "1.0.0-alpha",
   "main": "index.js",
-  "license": "MIT",
   "devDependencies": {
     "lerna": "^3.22.1"
   },

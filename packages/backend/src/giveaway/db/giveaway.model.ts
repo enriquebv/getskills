@@ -52,6 +52,13 @@ export class GiveawayModel extends BaseModel {
     title: string;
     cost: number;
   };
+
+  @Prop({ required: false, type: mongoose.Schema.Types.Mixed })
+  winner: {
+    id: string;
+    user: string;
+    name: string;
+  };
 }
 
 export const GiveawaySchema = SchemaFactory.createForClass(GiveawayModel);

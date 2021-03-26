@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { TwitchApiRepository } from 'src/twitch/twitch-api.repository';
 import { TwitchService } from 'src/twitch/twitch.service';
+import { UserModel } from 'src/user/db/user.model';
 import { UserRepository } from 'src/user/db/user.repository';
+import { UserDto } from 'src/user/dto/user.dto';
 import { GiveawayModel, GiveawayModelResolved } from './db/giveaway.model';
 import { GiveawayRepository } from './db/giveaway.repository';
 import CreateGiveawayDto from './dto/create-giveaway.dto';
+import ParticipantDto from './dto/participant.dto';
 import UpdateGiveawayDto from './dto/update-giveaway.dto';
 import { AuthorNotFoundException } from './exception/author-not-found.exception';
-import CantUpdateInactiveException from './exception/cant-update-inactive.exception';
+import CantUpdateInactiveGiveawayException from './exception/cant-update-inactive.exception';
 import { GiveawayActiveException } from './exception/giveaway-active.exception';
 import { GiveawayNotFoundException } from './exception/giveaway-not-found.exception';
 import InvalidGiveawayType from './exception/invalid-giveaway-type.exception';
@@ -92,7 +95,7 @@ export class GiveawayService {
     }
 
     if (!giveaway.active) {
-      throw new CantUpdateInactiveException();
+      throw new CantUpdateInactiveGiveawayException();
     }
 
     await this.giveawayRepository.updateById(id, body);
@@ -197,5 +200,32 @@ export class GiveawayService {
       giveaway.id,
       options.userInfo,
     );
+  }
+
+  async pickWinnerAndEndGiveaway(
+    giveawayId: string,
+    issuer: string,
+  ): Promise<ParticipantDto> {
+    const giveaway = await this.giveawayRepository.getResolvedById(giveawayId);
+
+    if (giveaway.author.id !== issuer) {
+      throw new NotSameAuthorException();
+    }
+
+    if (!giveaway.active) {
+      throw new CantUpdateInactiveGiveawayException();
+    }
+
+    const { participants } = giveaway;
+    const winner =
+      participants[Math.floor(Math.random() * participants.length)];
+
+    await this.giveawayRepository.updateById(giveaway.id, {
+      active: false,
+      reasonFinished: 'finished',
+      winner,
+    });
+
+    return winner;
   }
 }

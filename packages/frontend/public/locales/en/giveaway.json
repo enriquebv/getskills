@@ -1,0 +1,5 @@
+{
+  "share": "Share the giveaway!",
+  "share-intent": "¡Join this giveaway!",
+  "channel-point-guide": "Go to <a href=\"{{authorTwitchLink}}\" target=\"_blank\">{{authorTwitchName}}</a>' s Twitch chat, and redeem the Channel Points reward <em>{{giveawayTitle}}</em>."
+}

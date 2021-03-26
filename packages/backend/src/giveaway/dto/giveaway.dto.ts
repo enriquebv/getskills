@@ -1,11 +1,6 @@
 import { UserDto } from 'src/user/dto/user.dto';
 import { GiveawayModelResolved } from '../db/giveaway.model';
-
-interface UserInfo {
-  id: string;
-  user: string;
-  name: string;
-}
+import ParticipantDto from './participant.dto';
 
 export default class GiveawayDto {
   id: string;
@@ -13,7 +8,7 @@ export default class GiveawayDto {
   description: string;
   author: UserDto;
   active: boolean;
-  participants: UserInfo[];
+  participants: ParticipantDto[];
   rewardInfo: {
     id: string;
     title: string;
@@ -27,6 +22,8 @@ export default class GiveawayDto {
     this.author = new UserDto(partial.author);
     this.active = partial.active;
     this.rewardInfo = partial.rewardInfo;
-    this.participants = partial.participants;
+    this.participants = partial.participants.map(
+      (participant) => new ParticipantDto(participant),
+    );
   }
 }

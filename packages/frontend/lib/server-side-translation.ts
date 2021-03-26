@@ -1,7 +1,7 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-export const resolveServerSideTranslations = async (
-  locale,
+export const mapTranslationProps = async (
+  locale: string,
   namespaces: string[]
 ) => serverSideTranslations(locale, namespaces);
 
@@ -9,6 +9,6 @@ export const serverSideTranslationsProps = (namespaces: string[]) => async ({
   locale,
 }) => ({
   props: {
-    ...(await resolveServerSideTranslations(locale, namespaces)),
+    ...(await mapTranslationProps(locale, namespaces)),
   },
 });

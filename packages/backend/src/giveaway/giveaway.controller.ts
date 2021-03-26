@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Get, Param, Patch } from '@nestjs/common';
 import { GetSession, Session } from 'src/auth/session.decorator';
 import CreateGiveawayDto from './dto/create-giveaway.dto';
+import ParticipantDto from './dto/participant.dto';
 import GiveawayDto from './dto/giveaway.dto';
 import UpdateGiveawayDto from './dto/update-giveaway.dto';
 import { GiveawayService } from './giveaway.service';
@@ -48,5 +49,15 @@ export class GiveawayController {
     @GetSession() session: Session,
   ) {
     await this.giveawayService.cancelGiveaway(id, session.userId);
+  }
+
+  @Post('/end/:id')
+  async endGiveaway(
+    @Param('id') id: string,
+    @GetSession() session: Session,
+  ): Promise<ParticipantDto> {
+    return new ParticipantDto(
+      await this.giveawayService.pickWinnerAndEndGiveaway(id, session.userId),
+    );
   }
 }

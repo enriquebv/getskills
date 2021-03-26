@@ -36,7 +36,8 @@ export default function Roadmap() {
 
       <li>
         <input type="checkbox" readOnly checked={false} /> Add options to{" "}
-        <em>Channel Points Giveaway MVP</em>.
+        <em>Channel Points Giveaway MVP</em>, enable realtime participants
+        notifications in giveaway landing page.
       </li>
       <li>
         <input type="checkbox" readOnly checked={false} /> Bits Giveaway MVP.
@@ -45,8 +46,6 @@ export default function Roadmap() {
         <input type="checkbox" readOnly checked={false} /> Random Loots when
         viewers redeem Channel Points or Bits.
       </li>
-
-      <h2></h2>
     </>
   );
 }
