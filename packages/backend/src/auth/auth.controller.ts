@@ -66,8 +66,14 @@ export class AuthController {
 
   @Post('/logout')
   async logout(@Res() res: Response) {
+    const { APP_ENV, ALLOWED_COOKIE_DOMAIN } = process.env;
+
     const removeCookieOptions = {
       expires: new Date(-1),
+      httpOnly: true,
+      path: '/',
+      domain: ALLOWED_COOKIE_DOMAIN,
+      secure: APP_ENV === 'production',
     };
 
     res
