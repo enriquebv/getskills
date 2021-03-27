@@ -10,7 +10,7 @@
     "lerna": "^3.22.1"
   },
   "scripts": {
-    "pm2c": "PM2_HOME=/etc/pm2daemon pm2",
+    "start": "cd ./packages/backend && yarn build && yarn start:prod",
     "lerna": "lerna",
     "docker:install": "yarn docker:install:redis && yarn docker:install:mongodb",
     "docker:install:redis": "docker run --name getskills-redis -p 6379:6379 -d redis:6.0.10",
