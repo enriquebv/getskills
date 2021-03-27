@@ -14,6 +14,7 @@ export default class GiveawayDto {
     title: string;
     cost: number;
   };
+  winner: ParticipantDto;
 
   constructor(partial: Partial<GiveawayModelResolved>) {
     this.id = partial.id;
@@ -25,5 +26,6 @@ export default class GiveawayDto {
     this.participants = partial.participants.map(
       (participant) => new ParticipantDto(participant),
     );
+    this.winner = partial.winner;
   }
 }

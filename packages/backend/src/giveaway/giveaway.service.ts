@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TwitchApiRepository } from 'src/twitch/twitch-api.repository';
 import { TwitchService } from 'src/twitch/twitch.service';
-import { UserModel } from 'src/user/db/user.model';
 import { UserRepository } from 'src/user/db/user.repository';
-import { UserDto } from 'src/user/dto/user.dto';
 import { GiveawayModel, GiveawayModelResolved } from './db/giveaway.model';
 import { GiveawayRepository } from './db/giveaway.repository';
 import CreateGiveawayDto from './dto/create-giveaway.dto';
@@ -15,6 +13,7 @@ import { GiveawayActiveException } from './exception/giveaway-active.exception';
 import { GiveawayNotFoundException } from './exception/giveaway-not-found.exception';
 import InvalidGiveawayType from './exception/invalid-giveaway-type.exception';
 import NotSameAuthorException from './exception/not-same-author.exception';
+import * as sanitize from 'sanitize-html';
 
 interface CreateGiveawayOptionsInterface extends CreateGiveawayDto {
   author: string;
@@ -146,6 +145,8 @@ export class GiveawayService {
       rewardId: reward.id,
     });
 
+    options.description = sanitize(options.description);
+
     return this.giveawayRepository.createGiveaway({
       ...options,
       rewardInfo: {
@@ -219,13 +220,38 @@ export class GiveawayService {
     const { participants } = giveaway;
     const winner =
       participants[Math.floor(Math.random() * participants.length)];
+    const user = await this.userRepository.getById(giveaway.author);
+    const { accessToken, id: twitchId } = user.twitch;
 
-    await this.giveawayRepository.updateById(giveaway.id, {
-      active: false,
-      reasonFinished: 'finished',
-      winner,
-    });
+    try {
+      await this.twitchApiRepository.deleteCustomReward(
+        {
+          accessToken,
+          twitchId,
+        },
+        giveaway.rewardInfo.id,
+      );
 
-    return winner;
+      await this.giveawayRepository.updateById(giveaway.id, {
+        active: false,
+        reasonFinished: 'winner-picked',
+        winner,
+      });
+
+      return winner;
+    } catch (error) {
+      // TODO Add option "force" to control error tolerance
+      if (error.status === 404) {
+        await this.giveawayRepository.updateById(giveaway.id, {
+          active: false,
+          reasonFinished: 'winner-picked',
+          winner,
+        });
+
+        return winner;
+      }
+
+      throw error;
+    }
   }
 }

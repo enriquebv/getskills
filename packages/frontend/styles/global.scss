@@ -82,3 +82,18 @@ a:visited {
   font-family: Raleway, "sans-serif";
   font-weight: bold;
 }
+
+.MuiAlert-standardInfo {
+  margin-bottom: 20px !important;
+  background: #282b3f !important;
+  font-family: "Roboto" !important;
+  color: #fff !important;
+
+  .MuiAlert-message {
+    font-weight: normal !important;
+  }
+
+  .MuiAlert-icon {
+    color: #fff !important;
+  }
+}

@@ -13,9 +13,9 @@ import "medium-editor/dist/css/medium-editor.css";
 import "medium-editor/dist/css/themes/beagle.css";
 import "react-slidedown/lib/slidedown.css";
 
-import "styles/global.scss";
 import { ThemeProvider } from "@material-ui/styles";
 import { theme } from "lib/theme";
+import "styles/global.scss";
 
 function App({ Component, pageProps }: AppProps): JSX.Element {
   return (

@@ -1,13 +1,18 @@
-import styles from "./styles.module.scss";
-import { getGiveawayByUser } from "infrastructure/api";
+import { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import SSRError from "lib/ssr-error";
 import { mapTranslationProps } from "lib/server-side-translation";
+
+// Styles
+import styles from "./styles.module.scss";
+
+// Api
+import { pickWinnerGiveaway } from "infrastructure/api";
+import { getGiveawayByUser } from "infrastructure/api";
+
+// Hooks
 import useUser from "lib/use-user";
 import { useTranslation } from "react-i18next";
-import { InlineIcon } from "@iconify/react";
-
-import { pickWinnerGiveaway } from "infrastructure/api";
 
 // Icons
 import facebookIcon from "@iconify/icons-brandico/facebook";
@@ -15,14 +20,13 @@ import twitterIcon from "@iconify/icons-brandico/twitter-bird";
 import copyIcon from "@iconify/icons-mdi-light/content-duplicate";
 import telegramIcon from "@iconify/icons-bx/bxl-telegram";
 import twitchIcon from "@iconify/icons-bx/bxl-twitch";
-import { useState } from "react";
 
 // Components
+import { InlineIcon } from "@iconify/react";
 import Modal from "components/modal";
 import ReactConfetti from "react-confetti";
 import ChannelPointsReward from "components/channel-points-reward";
-import { resolve } from "path";
-import { request } from "https";
+import Footer from "components/footer";
 
 export const getServerSideProps: GetServerSideProps = async ({
   query,
@@ -34,9 +38,10 @@ export const getServerSideProps: GetServerSideProps = async ({
     "footer",
     "giveaway",
   ]);
+
   try {
     const response = await getGiveawayByUser(streamer as string);
-    return { props: { giveaway: response.data, ...i18nProps } };
+    return { props: { giveaway: response.data, ...i18nProps, streamer } };
   } catch (error) {
     if (error.response) {
       const { data, status } = error.response;
@@ -55,11 +60,20 @@ export const getServerSideProps: GetServerSideProps = async ({
 
 export default function GiveawayPage({
   giveaway,
-  ssrError,
 }: {
   giveaway: any;
   ssrError: SSRError;
 }) {
+  if (!giveaway) {
+    return (
+      <div
+        className={`${styles["giveaway-landing"]} ${styles["giveaway-center"]}`}
+      >
+        <h1>Giveaway not found</h1>
+      </div>
+    );
+  }
+
   const { user } = useUser();
   const { t } = useTranslation("giveaway");
   const viewerIsAuthor = user?.id === giveaway.author?.id;
@@ -67,28 +81,30 @@ export default function GiveawayPage({
   const [winner, setWinner] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  if (ssrError) {
-    return JSON.stringify(ssrError);
-  }
+  useEffect(() => {
+    if (giveaway.winner) setWinner(giveaway.winner);
+  }, [giveaway]);
 
   async function pickWinner() {
-    // await pickWinnerGiveaway(giveaway.id);
+    const response = await pickWinnerGiveaway(giveaway.id);
     window.scrollTo({
       top: 0,
       behavior: "auto",
     });
-    setWinner({ id: "1238417293", user: "enriquedev", name: "EnriqueDev" });
+    setWinner(response.data);
     setShowConfetti(true);
   }
 
+  // Returns short or long HTML giveaway description
   function computedDescription(): string {
-    const { description } = giveaway;
+    const description = giveaway.description.split("\n").join("<br/>");
 
     if (description.length < 300 || fullDescription) return description;
 
     return giveaway.description.substr(0, 500) + "...";
   }
 
+  // List of participants without duplicates
   const participantsList = Object.values(
     giveaway.participants.reduce((acc: Map<string, any>, participant: any) => {
       if (!acc[participant.id]) {
@@ -106,142 +122,185 @@ export default function GiveawayPage({
 
   return (
     <div className={styles["giveaway-landing"]}>
-      <div className={styles["twitch-user"]}>
-        <a href={`https://twitch.tv/${giveaway.author.user}`} target="_blank">
-          <h2>
-            <InlineIcon icon={twitchIcon} />
-            {giveaway.author.username}
-          </h2>
-        </a>
-      </div>
-
-      {showConfetti && (
-        <>
-          <Modal
-            className={styles["winner-modal"]}
-            onClose={() => setShowConfetti(false)}
-          >
-            <p className={styles["winner-modal-title"]}>El ganador es</p>
-            <p className={styles["winner-modal-name"]}>{winner.name}</p>
-          </Modal>
-          <ReactConfetti
-            width={document.body.offsetWidth}
-            className={styles.confetti}
-          />
-        </>
-      )}
-
-      <div className={styles["readable-content"]}>
-        <div className={styles.title}>
-          <h1>{giveaway.title}</h1>
-        </div>
-
-        <div className={styles.content}>
-          <div className={styles.text}>{computedDescription()}</div>
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              setFullDescription(!fullDescription);
-            }}
-          >
-            {fullDescription ? "Show less" : "Show more"}
+      <div className={styles["giveaway-landing-body"]}>
+        <div className={styles["twitch-user"]}>
+          <a href={`https://twitch.tv/${giveaway.author.user}`} target="_blank">
+            <h2>
+              <InlineIcon icon={twitchIcon} />
+              {giveaway.author.username}
+            </h2>
           </a>
         </div>
-      </div>
 
-      {viewerIsAuthor && (
-        <div
-          className={`${styles["section-container"]} ${styles["pick-winner-container"]}`}
-        >
-          <button className={styles["pick-winner"]} onClick={pickWinner}>
-            Pick a winner!
-          </button>
-          <p>
-            End the giveaway and select a winner from the current{" "}
-            {participantsList.length} participants.
-          </p>
-        </div>
-      )}
-
-      <div className={styles["joined-actions"]}>
-        <div
-          className={`${styles.container} ${styles["section-container"]} ${styles["guide"]}`}
-        >
-          <h2>How I join the giveaway?</h2>
-          <div className={styles["guide-container"]}>
-            <ChannelPointsReward
-              title={giveaway.rewardInfo.title}
-              cost={giveaway.rewardInfo.cost}
+        {showConfetti && (
+          <>
+            <Modal
+              className={styles["winner-modal"]}
+              onClose={() => setShowConfetti(false)}
+            >
+              <p className={styles["winner-modal-title"]}>{t("winner-is")}</p>
+              <p className={styles["winner-modal-name"]}>{winner.name}</p>
+            </Modal>
+            <ReactConfetti
+              width={document.body.offsetWidth}
+              className={styles.confetti}
             />
-            <span
-              className={styles["guide-container-text"]}
+          </>
+        )}
+
+        <div className={styles["readable-content"]}>
+          <div className={styles.title}>
+            <h1>{giveaway.title}</h1>
+          </div>
+
+          <div className={styles.content}>
+            <div
+              className={styles.text}
               dangerouslySetInnerHTML={{
-                __html: t("channel-point-guide", {
-                  authorTwitchLink: `https://twitch.tv/${giveaway.author.user}`,
-                  authorTwitchName: giveaway.author.username,
-                  giveawayTitle: giveaway.rewardInfo.title,
-                }),
+                __html: computedDescription(),
               }}
-            ></span>
+            ></div>
+            {giveaway.description.length > 300 && (
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setFullDescription(!fullDescription);
+                }}
+              >
+                {fullDescription ? "Show less" : "Show more"}
+              </a>
+            )}
           </div>
         </div>
 
-        <div className={`${styles.container} ${styles["section-container"]}`}>
-          <h2>{t("share")}</h2>
-          <div className={styles.share}>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                navigator.clipboard.writeText(
-                  `https://getskills.live/giveaway/${giveaway.author.user}`
-                );
-              }}
-              rel="noopener"
+        {viewerIsAuthor && !showConfetti && !winner && giveaway.active && (
+          <div
+            className={`${styles["section-container"]} ${styles["pick-winner-container"]}`}
+          >
+            <button
+              className={styles["pick-winner"]}
+              onClick={pickWinner}
+              disabled={participantsList.length === 0}
             >
-              <InlineIcon icon={copyIcon} /> Copy link
-            </a>
-            <a
-              href={`https://twitter.com/intent/tweet?url=https://getskills.live/giveaway/${
-                giveaway.author.user
-              }&text=${t("share-intent")}`}
-              target="_blank"
-              rel="noopener"
-            >
-              <InlineIcon icon={twitterIcon} /> Twitter
-            </a>
+              {t("pick-winner")}
+            </button>
+            <p>
+              {participantsList.length === 0 ? (
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t("more-participants-text"),
+                  }}
+                ></span>
+              ) : (
+                <span>{t("end-text", { count: participantsList.length })}</span>
+              )}
+            </p>
+          </div>
+        )}
 
-            <a
-              href={`https://t.me/share/url?url=https://getskills.live/giveaway/${
-                giveaway.author.user
-              }&text=${t("share-intent")}`}
-              target="_blank"
-              rel="noopener"
+        {winner && !showConfetti && (
+          <div
+            className={`${styles["section-container"]} ${styles["winner-container"]}`}
+            dangerouslySetInnerHTML={{
+              __html: t("persistent-winner-is", { winner: winner.name }),
+            }}
+          ></div>
+        )}
+
+        <div className={styles["joined-actions"]}>
+          {/* Join giveaway */}
+          {!winner && (
+            <div
+              className={`${styles.container} ${styles["section-container"]} ${styles["guide"]}`}
             >
-              <InlineIcon icon={telegramIcon} /> Telegram
-            </a>
-            <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=https://getskills.live/giveaway/${
-                giveaway.author.user
-              }&t=${t("share-intent")}`}
-              target="_blank"
-              rel="noopener"
-            >
-              <InlineIcon icon={facebookIcon} /> Facebook
-            </a>
+              <h2>{t("how-join")}</h2>
+              <div className={styles["guide-container"]}>
+                <ChannelPointsReward
+                  title={giveaway.rewardInfo.title}
+                  cost={giveaway.rewardInfo.cost}
+                />
+                <span
+                  className={styles["guide-container-text"]}
+                  dangerouslySetInnerHTML={{
+                    __html: t("channel-point-guide", {
+                      authorTwitchLink: `https://twitch.tv/${giveaway.author.user}`,
+                      authorTwitchName: giveaway.author.username,
+                      giveawayTitle: giveaway.rewardInfo.title,
+                    }),
+                  }}
+                ></span>
+              </div>
+            </div>
+          )}
+
+          {/* Share options */}
+          <div className={`${styles.container} ${styles["section-container"]}`}>
+            <h2>{t("share")}</h2>
+            <div className={styles.share}>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigator.clipboard.writeText(
+                    `https://getskills.live/giveaway/${giveaway.author.user}`
+                  );
+                }}
+                rel="noopener"
+              >
+                <InlineIcon icon={copyIcon} /> {t("share-copy")}
+              </a>
+              <a
+                href={`https://twitter.com/intent/tweet?url=https://getskills.live/giveaway/${
+                  giveaway.author.user
+                }&text=${t("share-intent")}`}
+                target="_blank"
+                rel="noopener"
+              >
+                <InlineIcon icon={twitterIcon} /> Twitter
+              </a>
+
+              <a
+                href={`https://t.me/share/url?url=https://getskills.live/giveaway/${
+                  giveaway.author.user
+                }&text=${t("share-intent")}`}
+                target="_blank"
+                rel="noopener"
+              >
+                <InlineIcon icon={telegramIcon} /> Telegram
+              </a>
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=https://getskills.live/giveaway/${
+                  giveaway.author.user
+                }&t=${t("share-intent")}`}
+                target="_blank"
+                rel="noopener"
+              >
+                <InlineIcon icon={facebookIcon} /> Facebook
+              </a>
+            </div>
           </div>
         </div>
+
+        {/* Current participants */}
+        {!winner && giveaway.active && (
+          <>
+            <div className={styles["section-container"]}>
+              <h2>{t("current-participants")}</h2>
+              <ul className={styles.participants}>
+                {participantsList.length === 0 && (
+                  <li>{t("be-the-first-to-join-the-giveaway")}</li>
+                )}
+                {participantsList.map(({ name }: { name: string }) => (
+                  <li key={name}>{name}</li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
       </div>
 
-      <div className={styles["section-container"]}>
-        <h2>Current Participants</h2>
-        <ul className={styles.participants}>
-          {participantsList.map(({ name }: { name: string }) => (
-            <li key={name}>{name}</li>
-          ))}
-        </ul>
-      </div>
+      <Footer className={styles.footer} showSiteName />
     </div>
   );
 }

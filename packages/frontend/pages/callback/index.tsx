@@ -57,7 +57,14 @@ export default function Callback() {
     try {
       const params = parseTwitchHash(window.location.hash);
       await authWithTwitch({ ...params, browser: true });
-      router.push("/app");
+      switch (router.locale) {
+        case "en":
+          router.push("/app");
+          break;
+        default:
+          router.push(`/${router.locale}/app`);
+          break;
+      }
     } catch (error) {
       setErrored(true);
 

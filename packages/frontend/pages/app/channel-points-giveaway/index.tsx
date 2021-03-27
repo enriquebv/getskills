@@ -4,6 +4,7 @@ import styles from "./styles.module.scss";
 import useUser from "lib/use-user";
 import React, { useEffect, useState } from "react";
 import { useToasts } from "react-toast-notifications";
+import { useTranslation } from "react-i18next";
 
 // Components
 import AppLayout from "layouts/app.layout";
@@ -11,6 +12,7 @@ import { Button, Slider } from "@material-ui/core";
 import Input from "components/input";
 import Textarea from "components/textarea";
 import Alert from "@material-ui/lab/Alert";
+import AlertTitle from "@material-ui/lab/AlertTitle";
 
 // Endpoints
 import {
@@ -23,10 +25,14 @@ import ChannelPointsReward from "components/channel-points-reward";
 import { useRouter } from "next/router";
 import { serverSideTranslationsProps } from "lib/server-side-translation";
 
-export const getStaticProps = serverSideTranslationsProps(["common", "footer"]);
+export const getStaticProps = serverSideTranslationsProps([
+  "common",
+  "footer",
+  "giveaway",
+]);
 
 export default function Giveaway() {
-  const router = useRouter();
+  const { t } = useTranslation("giveaway");
   const { addToast } = useToasts();
   const { user } = useUser();
   const [storedGiveaway, setStoredGiveaway] = useState(null);
@@ -139,7 +145,7 @@ export default function Giveaway() {
           onClick={onCancel}
           disableElevation
         >
-          Cancel
+          {t("cancel-giveaway")}
         </Button>
       ) : (
         <span></span>
@@ -153,7 +159,7 @@ export default function Giveaway() {
             onClick={() => window.open(`/giveaway/${user.user}`, "_blank")}
             disableElevation
           >
-            View
+            {t("view-giveaway-page")}
           </Button>
         )}
         <Button
@@ -163,25 +169,22 @@ export default function Giveaway() {
           onClick={onConfirm}
           disableElevation
         >
-          {isEditing ? "Save" : "Create"}
+          {isEditing ? t("update-giveaway") : t("create-giveaway")}
         </Button>
       </div>
     </div>
   );
 
   function computedRewardTitlePlaceholder() {
-    const { locale } = router;
-
-    switch (locale) {
-      case "es":
-        return `Sorteo "${title || "Sin titulo"}"`;
-      default:
-        return `Giveaway "${title || "Without title"}"`;
+    if (!title) {
+      return t("reward-config-title-default-empty");
     }
+
+    return t("reward-config-title-default", { title });
   }
 
   return (
-    <AppLayout title="Giveaway" disableDefaultBackground={true}>
+    <AppLayout title={t("giveaway")} disableDefaultBackground>
       <div className={styles["page-giveaway"]}>
         <div className={styles["page-giveaway-options"]}>
           {/* Giveaway Config */}
@@ -194,77 +197,96 @@ export default function Giveaway() {
               }}
               className={styles["title"]}
               onValueChange={setTitle}
-              placeholder={"Title"}
+              placeholder={t("title")}
               invalid={checkTitle && "Comprueba el titulo"}
             />
             <Textarea
               className={styles.description}
               value={description}
               onValueChange={setDescription}
-              placeholder="Description"
+              placeholder={t("description")}
               invalid={checkDescription && "Comrpueba la descripcion"}
             />
 
+            {/* Help alert */}
             {isEditing && (
               <Alert severity="info" style={{ marginBottom: "20px" }}>
-                When the giveaway is created, you can't update the channel
-                points reward.
+                <AlertTitle>{t("what-now")}</AlertTitle>
+                <ul>
+                  <li
+                    dangerouslySetInnerHTML={{
+                      __html: t("help-edit-reward", { user: user.user }),
+                    }}
+                  ></li>
+                  <li
+                    dangerouslySetInnerHTML={{
+                      __html: t("help-edit-page", { user: user.user }),
+                    }}
+                  ></li>
+                </ul>
               </Alert>
             )}
 
-            <div className={styles["reward-options"]}>
-              <div style={{ opacity: isEditing ? 0.5 : 1 }}>
-                <ChannelPointsReward
-                  title={rewardTitle}
-                  cost={rewardCost}
-                  placeholder={title}
-                />
-              </div>
-
-              <div className={styles["reward-options-config"]}>
-                <Input
-                  disabled={isEditing}
-                  value={rewardTitle}
-                  className={styles["reward-title"]}
-                  onValueChange={setRewardTitle}
-                  placeholder={computedRewardTitlePlaceholder()}
-                  invalid={checkTitle && "Comprueba el titulo"}
-                />
-                <div className={styles["reward-cost-config"]}>
-                  <Slider
-                    disabled={isEditing}
-                    defaultValue={rewardCost}
-                    value={rewardCost}
-                    min={50}
-                    max={50000}
-                    step={1000}
-                    onChange={(_, value) => setRewardCost(value as number)}
-                  />
-                  <Input
-                    disabled={isEditing}
-                    max={10000000}
-                    number
-                    value={rewardCost}
-                    className={styles["manual"]}
-                    onValueChange={setRewardCost}
-                    placeholder={"Reward cost"}
-                    invalid={checkTitle && "Comprueba el titulo"}
-                  />
-                </div>
-
-                <p className={styles.description}>
-                  Reward's preview that will be created (automatically) when you
-                  create the giveaway. This is what it will look like in your{" "}
-                  <a
-                    href="https://help.twitch.tv/s/article/channel-points-guide"
-                    target="_blank"
-                  >
-                    channel points
-                  </a>{" "}
-                  panel.
+            {!isEditing && (
+              <>
+                <h2 className={styles["custom-reward-config-title"]}>
+                  {t("reward-config-title")}
+                </h2>
+                <p className={styles["custom-reward-config-description"]}>
+                  {t("reward-config-description")}
                 </p>
-              </div>
-            </div>
+                <div className={styles["reward-options"]}>
+                  <div style={{ opacity: isEditing ? 0.5 : 1 }}>
+                    <ChannelPointsReward
+                      title={rewardTitle}
+                      cost={rewardCost}
+                      placeholder={title}
+                    />
+                  </div>
+
+                  <div className={styles["reward-options-config"]}>
+                    <Input
+                      disabled={isEditing}
+                      value={rewardTitle}
+                      className={styles["reward-title"]}
+                      onValueChange={setRewardTitle}
+                      placeholder={t("reward-config-title-placeholder", {
+                        title: computedRewardTitlePlaceholder(),
+                      })}
+                      invalid={checkTitle && "Comprueba el titulo"}
+                    />
+                    <div className={styles["reward-cost-config"]}>
+                      <Slider
+                        disabled={isEditing}
+                        defaultValue={rewardCost}
+                        value={rewardCost}
+                        min={50}
+                        max={50000}
+                        step={1000}
+                        onChange={(_, value) => setRewardCost(value as number)}
+                      />
+                      <Input
+                        disabled={isEditing}
+                        max={10000000}
+                        number
+                        value={rewardCost}
+                        className={styles["manual"]}
+                        onValueChange={setRewardCost}
+                        placeholder={"Reward cost"}
+                        invalid={checkTitle && "Comprueba el titulo"}
+                      />
+                    </div>
+
+                    <p
+                      className={styles.description}
+                      dangerouslySetInnerHTML={{
+                        __html: t("reward-config-help"),
+                      }}
+                    ></p>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           {actions}

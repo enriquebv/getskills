@@ -26,6 +26,5 @@ export const getGiveawayByUser = (user: string) =>
   instance.get(`giveaway/author/twitch/${user}`);
 export const cancelGiveaway = (id: string) =>
   instance.post(`/giveaway/cancel/${id}`);
-export const pickWinnerGiveaway = (id: string) => {
+export const pickWinnerGiveaway = (id: string) =>
   instance.post(`/giveaway/end/${id}`);
-};
