@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect } from "react";
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import Anime from "react-anime";
+// import Anime from "react-anime";
 
 // Components
 import { InlineIcon } from "@iconify/react";
@@ -47,16 +47,16 @@ export default function Modal({
         className={styles["modal-backdrop"]}
         onClick={handleBackdropClick as any}
       >
-        <Anime scale={[0, 1]}>
-          <div className={styles["modal-content"]}>
-            <div className={styles["modal-content-header"]}>
-              <button onClick={handleCloseClick as any}>
-                <InlineIcon icon={closeIcon} />
-              </button>
-            </div>
-            <div className={styles["modal-content-body"]}>{children}</div>
+        {/* <Anime scale={[0, 1]}> */}
+        <div className={styles["modal-content"]}>
+          <div className={styles["modal-content-header"]}>
+            <button onClick={handleCloseClick as any}>
+              <InlineIcon icon={closeIcon} />
+            </button>
           </div>
-        </Anime>
+          <div className={styles["modal-content-body"]}>{children}</div>
+        </div>
+        {/* </Anime> */}
       </div>
     </div>
   );
