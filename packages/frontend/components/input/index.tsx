@@ -12,8 +12,8 @@ interface InputProps {
   invalid?: boolean | string;
   disabled?: boolean;
   value?: string | number;
-  number?: boolean;
   max?: number;
+  type?: "number" | "text" | "email";
 }
 
 export default function Input({
@@ -26,8 +26,8 @@ export default function Input({
   invalid,
   disabled,
   value,
-  number,
   max,
+  type,
 }: InputProps) {
   const [refered, setRefered] = useState(false);
   const input = useRef<HTMLInputElement>(null);
@@ -52,18 +52,18 @@ export default function Input({
       <input
         value={value}
         ref={input}
-        type={number ? "number" : "text"}
+        type={type || "text"}
         disabled={disabled}
         placeholder={placeholder}
         onChange={(event) => {
           if (onChange) onChange(event);
 
-          if (onValueChange && !number) {
+          if (onValueChange && type !== "number") {
             const target = event.target as HTMLInputElement;
             onValueChange(target.value);
           }
 
-          if (onValueChange && number) {
+          if (onValueChange && type === "number") {
             const target = event.target as HTMLInputElement;
             const numberValue = Number(target.value);
             let realValue = max && numberValue > max ? max : numberValue;

@@ -268,7 +268,7 @@ export default function Giveaway() {
                       <Input
                         disabled={isEditing}
                         max={10000000}
-                        number
+                        type="number"
                         value={rewardCost}
                         className={styles["manual"]}
                         onValueChange={setRewardCost}

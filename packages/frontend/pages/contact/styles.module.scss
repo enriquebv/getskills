@@ -1,0 +1,16 @@
+.contact-page {
+  max-width: 550px;
+  margin: 0px auto;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+
+  .email {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .message {
+    margin-bottom: 20px;
+  }
+}

@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { GiveawayModule } from './giveaway/giveaway.module';
 import { TwitchModule } from './twitch/twitch.module';
+import { UtilityModule } from './utility/utility.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { TwitchModule } from './twitch/twitch.module';
     UserModule,
     GiveawayModule,
     TwitchModule,
+    UtilityModule,
   ],
 })
 export class AppModule implements NestModule {

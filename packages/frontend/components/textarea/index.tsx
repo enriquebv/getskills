@@ -9,7 +9,7 @@ interface TextareaProps {
   invalid?: boolean | string;
   disabled?: boolean;
   value?: string;
-  className: string;
+  className?: string;
 }
 
 export default function Textarea({

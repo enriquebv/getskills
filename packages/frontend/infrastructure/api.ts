@@ -28,3 +28,5 @@ export const cancelGiveaway = (id: string) =>
   instance.post(`/giveaway/cancel/${id}`);
 export const pickWinnerGiveaway = (id: string) =>
   instance.post(`/giveaway/end/${id}`);
+export const sendContact = (body: { email: string; message: string }) =>
+  instance.post("/utility/contact", body);
