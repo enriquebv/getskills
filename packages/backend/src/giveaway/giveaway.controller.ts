@@ -1,16 +1,26 @@
-import { Controller, Post, Body, Get, Param, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { GetSession, Session } from 'src/auth/session.decorator';
 import CreateGiveawayDto from './dto/create-giveaway.dto';
 import ParticipantDto from './dto/participant.dto';
 import GiveawayDto from './dto/giveaway.dto';
 import UpdateGiveawayDto from './dto/update-giveaway.dto';
 import { GiveawayService } from './giveaway.service';
+import { OnlyAuthorizedGuard } from 'src/auth/only-authorized.guard';
 
 @Controller('/api/giveaway')
 export class GiveawayController {
   constructor(private readonly giveawayService: GiveawayService) {}
 
   @Post()
+  @UseGuards(OnlyAuthorizedGuard)
   async createPost(
     @Body() body: CreateGiveawayDto,
     @GetSession() session: Session,
@@ -24,6 +34,7 @@ export class GiveawayController {
   }
 
   @Patch('/:id')
+  @UseGuards(OnlyAuthorizedGuard)
   async partialUdpatePost(
     @Param('id') id: string,
     @Body() body: UpdateGiveawayDto,
@@ -44,6 +55,7 @@ export class GiveawayController {
   }
 
   @Post('/cancel/:id')
+  @UseGuards(OnlyAuthorizedGuard)
   async cancelGiveaway(
     @Param('id') id: string,
     @GetSession() session: Session,
@@ -52,6 +64,7 @@ export class GiveawayController {
   }
 
   @Post('/end/:id')
+  @UseGuards(OnlyAuthorizedGuard)
   async endGiveaway(
     @Param('id') id: string,
     @GetSession() session: Session,

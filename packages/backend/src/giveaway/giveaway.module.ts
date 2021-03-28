@@ -1,5 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModule } from 'src/auth/auth.module';
 import { TwitchModule } from 'src/twitch/twitch.module';
 import { UserModule } from 'src/user/user.module';
 import { GiveawayModel, GiveawaySchema } from './db/giveaway.model';
@@ -11,6 +12,7 @@ import { GiveawayService } from './giveaway.service';
   imports: [
     forwardRef(() => TwitchModule),
     forwardRef(() => UserModule),
+    forwardRef(() => AuthModule),
     MongooseModule.forFeature([
       { name: GiveawayModel.name, schema: GiveawaySchema },
     ]),

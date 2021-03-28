@@ -7,8 +7,6 @@ export class TwitchController {
 
   @Post('webhook')
   async listenWebhook(@Body() body: any) {
-    // TODO verificar signature
-
     if (body.challenge) return body.challenge;
 
     if (!body.subscription.type) {
@@ -30,10 +28,5 @@ export class TwitchController {
       default:
         throw new Error('bad request de tipo');
     }
-  }
-
-  @Get('webhook/subscriptions')
-  async getWebhookSubscriptions() {
-    return this.twitchService.getWebhookSubscriptions();
   }
 }
