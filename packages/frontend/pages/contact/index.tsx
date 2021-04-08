@@ -38,8 +38,6 @@ export default function ContactPage() {
           });
         }
 
-        console.info(error.response.data.message);
-
         if (error.response.data.message.includes(MESSAGE_API_ERROR)) {
           addToast("You need to write a message.", {
             appearance: "error",

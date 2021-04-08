@@ -10,6 +10,9 @@
     "lerna": "^3.22.1"
   },
   "scripts": {
+    "dev": "concurrently --kill-others \"yarn dev:frontend\" \"yarn dev:backend\"",
+    "dev:frontend": "cd ./packages/frontend && yarn dev",
+    "dev:backend": "cd ./packages/backend && yarn dev",
     "start": "cd ./packages/backend && yarn build && yarn start:prod",
     "lerna": "lerna",
     "docker:install": "yarn docker:install:redis && yarn docker:install:mongodb",
@@ -18,5 +21,8 @@
     "docker:start": "docker start getskills-mongodb && docker start getskills-redis",
     "docker:stop": "docker stop getskills-mongodb && docker stop getskills-redis",
     "docker:restart": "docker restart getskills-mongodb && docker restart getskills-redis"
+  },
+  "dependencies": {
+    "concurrently": "^6.0.1"
   }
 }

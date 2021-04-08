@@ -27,6 +27,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li><a href="#branching">Branching</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
@@ -103,6 +104,31 @@ To get a local copy up and running follow these simple steps.
    ```
 
 > You must need a MongoDB server to store the data. If you dont have any, you can run: `yarn docker:install` and `yarn docker:start`. You will need Docker.
+
+## Branching
+
+To keep `master` branch clean, we are going to use a simple brancing strategy.
+
+1. **Nobody** push to master. Nobody.
+2. All new features/fixes will be merged.
+3. Features will start with `feature/<branch>`.
+4. Fixes will start with `fix/<branch>`.
+5. Branches will be in kebab-case.
+
+```bash
+# Bad
+usersSubsFeature
+usersSubsFix
+someOtherThing
+
+# Good
+feature/users-subs
+fix/users-subs
+some-other-thing
+```
+
+> - **What is a fix?** When you make something works, when was broke.
+> - **What is a feature?** When you add something to the code, what brings value to the project.
 
 <!-- CONTACT -->
 
