@@ -102,7 +102,7 @@ To get a local copy up and running follow these simple steps.
    NEXT_PUBLIC_API_SERVER=http://localhost:3000
    ```
 
-> You must need a MongoDB server to store the data. If you dont have any, you can run: `yarn docker:install` and `yarn docker:start`. You will need Docker.
+> You must need a MongoDB server to store the data. If you dont have any, run: `yarn docker:install` and `yarn docker:start`. You will need Docker.
 
 <!-- CONTACT -->
 
