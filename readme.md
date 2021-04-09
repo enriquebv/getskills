@@ -109,11 +109,14 @@ To get a local copy up and running follow these simple steps.
 
 To keep `master` branch clean, we are going to use a simple brancing strategy.
 
-1. **Nobody** push to master. Nobody.
-2. All new features/fixes will be merged.
+1. **Nobody** can to master.
+2. All the work needs to be merged to `dev` branch.
 3. Features will start with `feature/<branch>`.
 4. Fixes will start with `fix/<branch>`.
 5. Branches will be in kebab-case.
+6. Every merge between `dev` and `branch` will be considered a release.
+
+![Branching](./docs/branching.png)
 
 ```bash
 # Bad
