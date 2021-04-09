@@ -71,7 +71,8 @@ To get a local copy up and running follow these simple steps.
     TWITCH_CLIENT_SECRET=XXXXXXXXXXXXXXXXXXXXXXXXXXXXX # Twitch App Secret
     TWITCH_WEBHOOK_SECRET=12345678910
 
-    DISCORD_CONTACT_WEBHOOK=https://discord.com/api/webhooks/XXXXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXXXXXX # Discord channel webhook url
+    DISCORD_CONTACT_WEBHOOK=https://discord.com/api/webhooks/XXXXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXXXXXX # Contact form, discord channel webhook url
+    DISCORD_SYSTEM_LOGS_WEBHOOK=https://discord.com/api/webhooks/XXXXXXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXXXXXX # Error logs, discord channel webhook url
    ```
 
 6. Remove `.example` suffix from `/packages/frontend/.env.local.example` files and write with real values.
