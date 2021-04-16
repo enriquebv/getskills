@@ -23,8 +23,8 @@
           border-radius: 5px;
           padding: 0px 10px;
           transition: all 0.15s ease-in-out;
-          font-family: "Roboto", sans-serif;
-          border: 1px solid #1d1f2e;
+          font-family: "Raleway", sans-serif;
+          background: #1d1f2e;
           margin-bottom: 10px;
 
           & > span {
@@ -39,8 +39,8 @@
             border-color: #2f44ff;
           }
 
-          &:hover {
-            border-color: #2f44ff;
+          &:hover:not(.active) {
+            background: #2f3246;
           }
 
           &.soon {

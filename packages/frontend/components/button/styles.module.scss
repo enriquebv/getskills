@@ -1,0 +1,83 @@
+.ui-button {
+  height: 50px;
+  border-radius: 10px;
+  border: 0;
+  min-width: 150px;
+  background: #2f44ff;
+  color: #fff;
+  cursor: pointer;
+  padding: 0px 20px;
+  transition: all 0.15s ease-in-out;
+
+  &:hover {
+    background: #2737c7;
+  }
+
+  &:active {
+    background: #3548f1;
+  }
+
+  &:focus {
+    background: #202c99;
+    outline: none;
+  }
+
+  &.outline {
+    background: none;
+    border: 1px solid #2f44ff;
+    color: #2f44ff;
+
+    &:hover {
+      color: #2737c7;
+      border-color: #2737c7;
+    }
+
+    &:active {
+      color: #3548f1;
+      border-color: #3548f1;
+    }
+
+    &:focus {
+      color: #202c99;
+      border-color: #202c99;
+      outline: none;
+    }
+  }
+
+  &.red {
+    background: #e74c3c;
+
+    &:hover {
+      background: #cc4637;
+    }
+
+    &:active {
+      background: #d34738;
+    }
+
+    &:focus {
+      background: #cc4637;
+    }
+
+    &.outline {
+      background: none;
+      border: 1px solid #e74c3c;
+      color: #e74c3c;
+
+      &:hover {
+        color: #cc4637;
+        border-color: #cc4637;
+      }
+
+      &:active {
+        color: #d34738;
+        border-color: #d34738;
+      }
+
+      &:focus {
+        color: #e74c3c;
+        border-color: #e74c3c;
+      }
+    }
+  }
+}

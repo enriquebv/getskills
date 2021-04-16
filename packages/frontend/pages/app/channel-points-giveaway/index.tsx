@@ -8,11 +8,12 @@ import { useTranslation } from "react-i18next";
 
 // Components
 import AppLayout from "layouts/app.layout";
-import { Button, Slider } from "@material-ui/core";
+import { Slider } from "@material-ui/core";
 import Input from "components/input";
 import Textarea from "components/textarea";
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
+import UiButton from "components/button";
 
 // Endpoints
 import {
@@ -138,39 +139,25 @@ export default function Giveaway() {
   const actions = (
     <div className={styles.actions}>
       {isEditing ? (
-        <Button
-          className={styles.cancel}
-          color="primary"
-          variant="outlined"
-          onClick={onCancel}
-          disableElevation
-        >
+        <UiButton color="red" variant="outline" onClick={onCancel}>
           {t("cancel-giveaway")}
-        </Button>
+        </UiButton>
       ) : (
         <span></span>
       )}
       <div>
         {isEditing && (
-          <Button
+          <UiButton
             className={styles.create}
-            color="primary"
-            variant="outlined"
+            variant="outline"
             onClick={() => window.open(`/giveaway/${user.user}`, "_blank")}
-            disableElevation
           >
             {t("view-giveaway-page")}
-          </Button>
+          </UiButton>
         )}
-        <Button
-          className={styles.create}
-          color="primary"
-          variant="contained"
-          onClick={onConfirm}
-          disableElevation
-        >
+        <UiButton className={styles.create} onClick={onConfirm}>
           {isEditing ? t("update-giveaway") : t("create-giveaway")}
-        </Button>
+        </UiButton>
       </div>
     </div>
   );
