@@ -7,12 +7,19 @@ import { logout } from "infrastructure/api";
 import { useToasts } from "react-toast-notifications";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
+import { useChangeLocale } from "lib/i18n";
 
 export default function GlobalLayout({ children }): JSX.Element {
   const { user } = useUser();
   const router = useRouter();
   const { addToast } = useToasts();
   const { t } = useTranslation("common");
+  const { change } = useChangeLocale();
+
+  function handleLocaleChange(event: any, locale: string) {
+    (event as MouseEvent).preventDefault();
+    change(locale);
+  }
 
   return (
     <div className={styles["global-layout"]}>
@@ -42,7 +49,7 @@ export default function GlobalLayout({ children }): JSX.Element {
             </a>
             <p className={styles["lang"]}>
               <span>
-                <Link href={router.pathname} locale="en">
+                <a href="#" onClick={(e) => handleLocaleChange(e, "en")}>
                   <span
                     className={
                       router.locale === "en" ? styles["active"] : undefined
@@ -50,11 +57,11 @@ export default function GlobalLayout({ children }): JSX.Element {
                   >
                     EN
                   </span>
-                </Link>
+                </a>
               </span>
               <span className={styles["separator"]}>|</span>
               <span>
-                <Link href={router.pathname} locale="es">
+                <a href="#" onClick={(e) => handleLocaleChange(e, "es")}>
                   <span
                     className={
                       router.locale === "es" ? styles["active"] : undefined
@@ -62,7 +69,7 @@ export default function GlobalLayout({ children }): JSX.Element {
                   >
                     ES
                   </span>
-                </Link>
+                </a>
               </span>
             </p>
           </nav>
