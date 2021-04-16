@@ -1,0 +1,24 @@
+.ui-button {
+  height: 50px;
+  border-radius: 10px;
+  border: 0;
+  min-width: 150px;
+  background: #2f44ff;
+  color: #fff;
+  cursor: pointer;
+  padding: 0px 20px;
+  transition: all 0.15s ease-in-out;
+
+  &:hover {
+    background: #2737c7;
+  }
+
+  &:active {
+    background: #3548f1;
+  }
+
+  &:focus {
+    background: #202c99;
+    outline: none;
+  }
+}

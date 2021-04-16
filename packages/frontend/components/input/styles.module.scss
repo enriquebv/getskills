@@ -42,9 +42,10 @@
   }
 
   input {
-    border: 1px solid #666a7c;
+    border: 0;
     width: 100%;
     background: none;
+    background: #2d314a;
 
     height: 40px;
     border-radius: 5px;
@@ -53,6 +54,7 @@
     font-family: "Raleway", sans-serif;
     font-size: 16px;
     font-weight: 400;
+    transition: background 0.15s ease-in-out;
 
     &::placeholder {
       color: rgba(255, 255, 255, 0.8);
@@ -60,7 +62,7 @@
 
     &:focus {
       outline: none;
-      border-color: #fff;
+      background: #3d4261;
     }
   }
 }

@@ -11,6 +11,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { GiveawayNotFoundException } from './giveaway/exception/giveaway-not-found.exception';
 
 const logger = createLogger({
   name: 'logger',
@@ -23,6 +24,8 @@ interface ErrorResponse {
   message: string;
 }
 
+const AVOID_DISCORD_LOG = [GiveawayNotFoundException];
+
 @Catch(HttpException, Error)
 export class ErrorHandler implements ExceptionFilter {
   async catch(exception: HttpException | Error, host: ArgumentsHost) {
@@ -30,8 +33,6 @@ export class ErrorHandler implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const errorResponse = this.getErrorResponse(exception);
-
-    console.info(process.env.DISCORD_SYSTEM_LOGS_WEBHOOK);
 
     this.logInFile(exception);
     this.logInConsole(exception);
@@ -71,6 +72,12 @@ export class ErrorHandler implements ExceptionFilter {
   }
 
   async logInDiscord(exception: HttpException | Error, request: Request) {
+    const avoidLog = AVOID_DISCORD_LOG.some(
+      (instance) => exception instanceof instance,
+    );
+
+    if (avoidLog) return;
+
     try {
       const response = this.getErrorResponse(exception);
       let emoji: string;
@@ -79,6 +86,7 @@ export class ErrorHandler implements ExceptionFilter {
         case 403:
         case 401:
         case 400:
+        case 404:
           emoji = '🤨';
           break;
         default:

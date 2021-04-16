@@ -1,5 +1,4 @@
 @import "./fonts/raleway/loader.scss";
-@import "./fonts/roboto/loader.scss";
 
 html,
 body {
@@ -75,7 +74,7 @@ a:visited {
 
 .react-toast-notifications__toast__content {
   font-size: 16px !important;
-  font-family: Roboto, sans-serif;
+  font-family: sans-serif;
 }
 
 .MuiAlert-message {
@@ -86,7 +85,7 @@ a:visited {
 .MuiAlert-standardInfo {
   margin-bottom: 20px !important;
   background: #282b3f !important;
-  font-family: "Roboto" !important;
+  font-family: "Raleway" !important;
   color: #fff !important;
 
   .MuiAlert-message {
