@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import cn from "classnames";
+import { useChangeLocale } from "lib/i18n";
 
 interface FooterProps {
   className?: string;
@@ -12,6 +13,12 @@ interface FooterProps {
 export default function Footer({ className, showSiteName }: FooterProps) {
   const { t } = useTranslation("footer");
   const router = useRouter();
+  const { change } = useChangeLocale();
+
+  function handleLocaleChange(event: any, locale: string) {
+    (event as MouseEvent).preventDefault();
+    change(locale);
+  }
 
   return (
     <footer className={cn(styles["footer"], className)}>
@@ -29,12 +36,12 @@ export default function Footer({ className, showSiteName }: FooterProps) {
           )}
         </nav>
         <nav className={styles["right"]}>
-          <Link href={router.pathname} locale="en">
+          <a href="#" onClick={(e) => handleLocaleChange(e, "en")}>
             English
-          </Link>
-          <Link href={router.pathname} locale="es">
+          </a>
+          <a href="#" onClick={(e) => handleLocaleChange(e, "es")}>
             Español
-          </Link>
+          </a>
           <span>
             <Link href="/cookie-terms">{t("cookies-terms")}</Link> |{" "}
             <Link href="/privacy">{t("privacy")}</Link>

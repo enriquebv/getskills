@@ -8,14 +8,12 @@ import "tippy.js/dist/tippy.css";
 import "modern-normalize";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
-import "megadraft/dist/css/megadraft.css";
-import "medium-editor/dist/css/medium-editor.css";
-import "medium-editor/dist/css/themes/beagle.css";
 import "react-slidedown/lib/slidedown.css";
 
 import { ThemeProvider } from "@material-ui/styles";
 import { theme } from "lib/theme";
 import "styles/global.scss";
+import { I18nConsistencyProvider } from "lib/i18n";
 
 function App({ Component, pageProps }: AppProps): JSX.Element {
   return (
@@ -24,11 +22,13 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>GetSkills.live</title>
       </Head>
-      <ThemeProvider theme={theme}>
-        <ToastProvider>
-          <Component {...pageProps} />
-        </ToastProvider>
-      </ThemeProvider>
+      <I18nConsistencyProvider>
+        <ThemeProvider theme={theme}>
+          <ToastProvider>
+            <Component {...pageProps} />
+          </ToastProvider>
+        </ThemeProvider>
+      </I18nConsistencyProvider>
     </>
   );
 }
