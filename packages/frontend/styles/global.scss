@@ -96,3 +96,11 @@ a:visited {
     color: #fff !important;
   }
 }
+
+.MuiTypography-root {
+  font-family: "Raleway", "sans-serif" !important;
+
+  &.MuiAlertTitle-root {
+    font-weight: bold;
+  }
+}
