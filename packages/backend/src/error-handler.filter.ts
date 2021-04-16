@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { GiveawayNotFoundException } from './giveaway/exception/giveaway-not-found.exception';
+import { WithoutTokenException } from './auth/exception/without-token.exception';
 
 const logger = createLogger({
   name: 'logger',
@@ -24,7 +25,7 @@ interface ErrorResponse {
   message: string;
 }
 
-const AVOID_DISCORD_LOG = [GiveawayNotFoundException];
+const AVOID_DISCORD_LOG = [GiveawayNotFoundException, WithoutTokenException];
 
 @Catch(HttpException, Error)
 export class ErrorHandler implements ExceptionFilter {

@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import Button from "components/button";
 import Input from "components/input";
 import Textarea from "components/textarea";
 import { sendContact } from "infrastructure/api";
@@ -67,14 +67,7 @@ export default function ContactPage() {
           onValueChange={setMessage}
           placeholder={"Message (required)"}
         />
-        <Button
-          size="large"
-          onClick={handleSend}
-          variant="contained"
-          color="primary"
-        >
-          Send
-        </Button>
+        <Button onClick={handleSend}>Send</Button>
       </div>
     </GlobalLayout>
   );
